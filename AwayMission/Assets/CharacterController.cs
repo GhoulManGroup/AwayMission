@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class CharacterController : MonoBehaviour
 {
+
+    public GameObject currentPosition;
+
     public void OnMouseDown()
     {
         Debug.Log("Pressed Character");
