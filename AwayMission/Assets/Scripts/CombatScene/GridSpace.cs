@@ -8,6 +8,10 @@ public class GridSpace : MonoBehaviour
 
     #region Declerations
     [Header("")]
+
+    float xPosition;
+    float yPosition;
+
     public string myState = "Empty";
 
     public List<GameObject> Neighbours = new List<GameObject>();
@@ -16,15 +20,23 @@ public class GridSpace : MonoBehaviour
 
     #endregion
 
-    #region SetupProject
+    #region SetupGridSpace
 
     void Start()
     {
-
+        xPosition = this.transform.position.x;
+        yPosition = this.transform.position.y;
+        //DeclareNeighbours();
     }
 
     public void DeclareNeighbours()
     {
+        RaycastHit Test;
+        if (Physics.Raycast(Physics.Raycast(transform.position, transform.TransformDirection(new Vector3(1, 0, 1)), out Test, 1f))
+        {
+
+        }
+
 
         RaycastHit Forward;
         if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out Forward, 1f))
@@ -78,7 +90,7 @@ public class GridSpace : MonoBehaviour
     #endregion
 
     #region PlayerCreatureMovementCode
-
+    /*
     public void FindPossibleMovements()
     {
         // We know how many tiles from start pos we could move now we check if there is anywhere we can move.
@@ -186,11 +198,7 @@ public class GridSpace : MonoBehaviour
             pathfinder.HasMoved();
         }
     }
+ */       
     #endregion
-
-    // Update is called once per frame
-    void Update()
-        {
         
-        }
 }

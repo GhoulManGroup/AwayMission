@@ -17,6 +17,7 @@ namespace Navigation {
         public List<GameObject> reachableTiles = new List<GameObject>(); //AI Go through this list and pick the one with the lowest value. 
         public List<GameObject> chosenPathTiles = new List<GameObject>();
 
+        bool possibleToMove;
         public int possibleMoveDistance;
         public float rotationSpeed = 45;
         public float moveSpeed = 2f;
@@ -33,7 +34,7 @@ namespace Navigation {
         {
             WhichStepIsBroken = "Declare";
             //currentCharacter = creatureTokenPicked;
-            possibleMoveDistance = 1f; //creatureTokenPicked.GetComponent<CreatureToken>().currentMoveDistance;
+            possibleMoveDistance = 1; //creatureTokenPicked.GetComponent<CreatureToken>().currentMoveDistance;
             startPosition = currentCharacter.GetComponent<CharacterController>().currentPosition;
             tilesToCheck.Add(startPosition);
             //Old Crest Code
@@ -50,7 +51,7 @@ namespace Navigation {
                 WhichStepIsBroken = "CheckPossibleMoves";
                 if (tilesToCheck.Count != 0)
                 {
-                    tilesToCheck[0].GetComponent<GridScript>().FindPossibleMovements();
+                    //tilesToCheck[0].GetComponent<GridSpace>().FindPossibleMovements();
                 }
                 else if (tilesToCheck.Count == 0)
                 {
@@ -69,7 +70,7 @@ namespace Navigation {
             {
                 for (int i = 0; i < reachableTiles.Count; i++)
                 {
-                    reachableTiles[i].GetComponent<GridScript>().ShowPossibleMovements();
+                   // reachableTiles[i].GetComponent<GridSpace>().ShowPossibleMovements();
                 }
             }
 
@@ -78,7 +79,7 @@ namespace Navigation {
                 WhichStepIsBroken = "FindPath";
                 if (tilesToCheck.Count != 0)
                 {
-                    tilesToCheck[0].GetComponent<GridScript>().FindPossiblePathToStart();
+                    //tilesToCheck[0].GetComponent<GridSpace>().FindPossiblePathToStart();
                 }
                 else if (tilesToCheck.Count == 0)
                 {
@@ -93,22 +94,22 @@ namespace Navigation {
         {
             WhichStepIsBroken = "MovePiece";
             // Check the size of chosenPath, if its 0 then we are next to desired position else  we pick the tile closest to start being the last one added so listName.count
-            GameObject currentPos = chosenPiece.GetComponent<CreatureToken>().myBoardLocation;
+           // GameObject currentPos = chosenPiece.GetComponent<CreatureToken>().myBoardLocation;
             GameObject desiredPos = null;
 
             if (chosenPathTiles.Count == 0)
             {
                 desiredPos = desiredPosition;
-                positionToMove = new Vector3(desiredPos.transform.position.x, chosenPiece.transform.position.y, desiredPos.transform.position.z);
+               // positionToMove = new Vector3(desiredPos.transform.position.x, chosenPiece.transform.position.y, desiredPos.transform.position.z);
             }
             else if (chosenPathTiles.Count > 0)
             {
                 desiredPos = chosenPathTiles[chosenPathTiles.Count - 1];
-                positionToMove = new Vector3(desiredPos.transform.position.x, chosenPiece.transform.position.y, desiredPos.transform.position.z);
+                //positionToMove = new Vector3(desiredPos.transform.position.x, chosenPiece.transform.position.y, desiredPos.transform.position.z);
             }
 
             //Find where the next tile in the path is in relation to us.
-            NextTileLocation(desiredPos, currentPos);
+           // NextTileLocation(desiredPos, currentPos);
 
             //Rotate to Face it. Turn Back On When 3D Models are added for now sprites dont need to rotate as they are billboard sprites so this just slows the game down considerabley.
             //Also Rotation is bugged and still does not rotate in the shortest direction some times doing a 270 degreee turn rather than 90.
@@ -118,11 +119,11 @@ namespace Navigation {
             //Move Towards It
             yield return StartCoroutine("WalkToTile");
 
-            if (chosenPiece.GetComponent<CreatureToken>().myBoardLocation == desiredPosition)
+            if (currentCharacter.GetComponent<CharacterController>().currentPosition == desiredPosition)
             {
-                HasMoved();
+                //HasMoved();
             }
-            else if (chosenPiece.GetComponent<CreatureToken>().myBoardLocation != desiredPosition)
+            else if (currentCharacter.GetComponent<CharacterController>().currentPosition != desiredPosition)
             {
                 chosenPathTiles.Remove(chosenPathTiles[chosenPathTiles.Count - 1]);
                 StartCoroutine("MovePieceThroughPath");
@@ -156,7 +157,7 @@ namespace Navigation {
             //Where we currenly face & how we get to face wantedir;
             rotationSpeed = 45;
             float value = rotationSpeed;
-            switch (chosenPiece.transform.eulerAngles.y)
+            switch (currentCharacter.transform.eulerAngles.y)
             {
                 case 0:
                     switch (wantedDir)
@@ -254,16 +255,16 @@ namespace Navigation {
 
         IEnumerator WalkToTile()
         {
-            while (chosenPiece.transform.position != (positionToMove))
+            while (currentCharacter.transform.position != (positionToMove))
             {
-                chosenPiece.transform.position = Vector3.MoveTowards(chosenPiece.transform.position, positionToMove, moveSpeed * Time.deltaTime);
+                currentCharacter.transform.position = Vector3.MoveTowards(currentCharacter.transform.position, positionToMove, moveSpeed * Time.deltaTime);
                 yield return null;
             }
 
-            chosenPiece.GetComponent<CreatureToken>().FindTileBellowMe("Move");
+            //currentCharacter.GetComponent<CharacterController>().FindTileBellowMe("Move");
 
             yield return null;
         }
     }
-
+    #endregion
 }
