@@ -20,7 +20,7 @@ namespace Navigation
                 for (int j = 0; j < gridHeight; j++)
                 {
                     GameObject gridSpace = Instantiate(gridPrefab, new Vector3(i, 0, j), Quaternion.identity);
-                    gridSpace.name = "GridSpace";
+                    gridSpace.name = i.ToString() + "," + j.ToString();
                 }
             }
         }

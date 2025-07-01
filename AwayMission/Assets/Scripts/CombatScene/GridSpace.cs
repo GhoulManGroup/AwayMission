@@ -26,17 +26,12 @@ public class GridSpace : MonoBehaviour
     {
         xPosition = this.transform.position.x;
         yPosition = this.transform.position.y;
-        //DeclareNeighbours();
+        DeclareNeighbours();
     }
 
     public void DeclareNeighbours()
     {
-        RaycastHit Test;
-        if (Physics.Raycast(Physics.Raycast(transform.position, transform.TransformDirection(new Vector3(1, 0, 1)), out Test, 1f))
-        {
-
-        }
-
+        Neighbours.Clear();
 
         RaycastHit Forward;
         if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out Forward, 1f))
@@ -82,6 +77,59 @@ public class GridSpace : MonoBehaviour
                 if (Right.collider.GetComponent<GridSpace>() != null)
                 {
                     Neighbours.Add(Right.collider.gameObject);
+                }
+            }
+        }
+
+
+        RaycastHit ForwardRight;
+
+        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward + Vector3.right), out ForwardRight, 1f))
+        {
+            if (ForwardRight.collider != null)
+            {
+                if (ForwardRight.collider.GetComponent<GridSpace>() != null)
+                {
+                    Neighbours.Add(ForwardRight.collider.gameObject);
+                }
+            }
+        }
+
+        RaycastHit DownRight;
+
+        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.back + Vector3.right), out DownRight, 1f))
+        {
+            if (DownRight.collider != null)
+            {
+                if (DownRight.collider.GetComponent<GridSpace>() != null)
+                {
+                    Neighbours.Add(DownRight.collider.gameObject);
+                }
+            }
+        }
+
+        RaycastHit DownLeft;
+
+        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.back + Vector3.left), out DownLeft, 1f))
+        {
+            if (DownLeft.collider != null)
+            {
+                if (DownLeft.collider.GetComponent<GridSpace>() != null)
+                {
+                    Neighbours.Add(DownLeft.collider.gameObject);
+                }
+            }
+        }
+
+        RaycastHit ForwardLeft;
+
+        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward + Vector3.left), out ForwardLeft, 1f))
+        {
+            if (ForwardLeft.collider != null)
+            {
+                if (ForwardLeft.collider.GetComponent<GridSpace>() != null)
+                {
+                    Neighbours.Add(ForwardLeft.collider.gameObject);
                 }
             }
         }
