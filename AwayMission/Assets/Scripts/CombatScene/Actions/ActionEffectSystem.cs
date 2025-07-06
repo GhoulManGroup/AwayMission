@@ -24,8 +24,9 @@ public class ActionEffectSystem : MonoBehaviour
     public IEnumerator PrepareAndResolveEffect()
     {
         targetsChecked = false;
-        this.GetComponent<ActionTargetFinder>().ac = effectToResolve;
-        this.GetComponent<ActionTargetFinder>().FindTarget();
+        yield return null;
+       // this.GetComponent<ActionTargetFinder>().ac = effectToResolve;
+        //this.GetComponent<ActionTargetFinder>().FindTarget();
     }
 
 }

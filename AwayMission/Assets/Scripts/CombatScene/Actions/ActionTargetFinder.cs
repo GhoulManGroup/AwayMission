@@ -29,7 +29,7 @@ public class ActionTargetFinder : MonoBehaviour
 
     IEnumerator ChooseTarget()
     {
-
+        yield return null;
     }
 
     IEnumerator TargetAreaOfEffect()

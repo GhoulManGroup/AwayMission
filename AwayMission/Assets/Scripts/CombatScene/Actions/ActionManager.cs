@@ -19,6 +19,11 @@ public class ActionManager : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
+        while (Manager.instance == null)
+        {
+            return;
+        }
+
         Manager.instance.actionManager = this;
     }
 
@@ -28,7 +33,7 @@ public class ActionManager : MonoBehaviour
         {
             checkingEffect = true;
             this.GetComponent<ActionEffectSystem>().effectToResolve = action.actionEffects[i];
-            this.GetComponent<ActionEffect>().StartCoroutine("PrepareAndCastEffect");
+            //this.GetComponent<ActionEffect>().StartCoroutine("PrepareAndCastEffect");
 
             while (checkingEffect == true)
             {
@@ -36,9 +41,9 @@ public class ActionManager : MonoBehaviour
             }
         }
         // Here We Are
-        while (readyEffects != myAbility.abilityEffects.Count)
-        {
-            yield return null;
-        }
+       // while (readyEffects != myAbility.abilityEffects.Count)
+        //{
+           // yield return null;
+       // }
     }
 }

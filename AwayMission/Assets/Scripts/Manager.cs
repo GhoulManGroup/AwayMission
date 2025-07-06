@@ -4,9 +4,28 @@ using UnityEngine;
 
 public class Manager : MonoBehaviour
 {
-    public static Manager instance;
+    public static Manager instance { get; private set; }
 
-    public ActionInterface actionInterface;
+    [Header("ActionSystem")]
+    public ActionInterface actionInterface = null;
+    public ActionManager actionManager = null;
 
-    public ActionManager actionManager;
+    [Header("TurnSystem")]
+    public TurnController turnController = null;
+    public TurnOrderQueInterface turnOrderQueInterface = null;
+
+    public void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
+        // DontDestroyOnLoad(gameObject);
+    }
 }
+

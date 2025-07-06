@@ -10,7 +10,7 @@ public class ActionInterface : MonoBehaviour
     public List<GameObject> actionButtons = new List<GameObject>();
     public List<GameObject> actionPoints = new List<GameObject>();
 
-    public void Awake()
+    public void Start()
     {
         Manager.instance.actionInterface = this;
     }
