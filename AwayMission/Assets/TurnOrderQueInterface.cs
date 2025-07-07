@@ -26,8 +26,29 @@ public class TurnOrderQueInterface : MonoBehaviour
         Manager.instance.turnOrderQueInterface = this;
     }
 
-    public void SetupInterface()
+    public void TurnOrderQueInterfaceState(bool onOrOff)
     {
+        if (onOrOff == false)
+        {
+            this.GetComponent<CanvasGroup>().alpha = 0f;
+        }
+        else
+        {
+            this.GetComponent<CanvasGroup>().alpha = 1f;
+        }
+        this.GetComponent<CanvasGroup>().blocksRaycasts = onOrOff;
+        this.GetComponent<CanvasGroup>().interactable = onOrOff;
+    }
+
+
+    public void UpdateIcons()
+    {
+        foreach (var item in myIcons)
+        {
+            Destroy(item);
+            Debug.Log(item + "Destroyed");
+        }
+
         for (int i = 0; i < Manager.instance.turnController.activeEntities.Count; i++)
         {
             GameObject newIcon = Instantiate(iconObject, iconBar.transform);
@@ -37,8 +58,4 @@ public class TurnOrderQueInterface : MonoBehaviour
         }
     }
 
-    public void UpdateIcons()
-    {
-
-    }
 }

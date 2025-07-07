@@ -31,9 +31,13 @@ public class TurnController : MonoBehaviour
         activeEntities.AddRange(this.GetComponentInChildren<Awayteam>().awayTeamMembers);
 
         //Write Future code to grab all intial non awayteam entities nearby to add to active object list.
+
         //Do check to see if any nearby entities need to become active from idle
 
+        Manager.instance.turnOrderQueInterface.TurnOrderQueInterfaceState(true);
+
         StartCoroutine(StartTurn());
+
     }
 
     public IEnumerator DetermineTurnOrder()
@@ -105,16 +109,12 @@ public class TurnController : MonoBehaviour
         //Determine intiative,
         yield return DetermineTurnOrder();
 
-        //then set up UI display
-        Manager.instance.turnOrderQueInterface.SetupInterface();
+        //then set up UI display for this turn
+        Manager.instance.turnOrderQueInterface.UpdateIcons();
 
         //Determine whose turn to act
 
     }
-
-
-
-    
 
     public void PassInitiative()
     {
