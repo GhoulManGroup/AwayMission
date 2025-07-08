@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 using static UnityEditor.Progress;
 
 public class TurnController : MonoBehaviour
@@ -21,6 +22,8 @@ public class TurnController : MonoBehaviour
         }
 
         Manager.instance.turnController = this;
+
+        Manager.instance.turnOrderQueInterface.PassActionButton.GetComponent<Button>().onClick.AddListener(PassInitiative);
     }
 
     #region Setup Turn System
@@ -113,6 +116,8 @@ public class TurnController : MonoBehaviour
         Manager.instance.turnOrderQueInterface.UpdateIcons();
 
         //Determine whose turn to act
+
+        Manager.instance.actionInterface.currentCharacter = activeEntities[0].gameObject.GetComponent<CharacterController>().myCharacter;
 
     }
 
