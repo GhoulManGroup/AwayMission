@@ -9,7 +9,7 @@ public class LevelController : MonoBehaviour
     {
         // Move this to after sceneloaded when we add new scenes and such but for now its here
         Debug.Log("Start Turn");
-        Manager.instance.turnController.SetupTurnController();
+        //Manager.instance.turnController.SetupTurnController();
     }
 
     //Later add stuff for win / loss conditions ect when we plan out what those are>?

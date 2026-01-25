@@ -2,12 +2,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using Random = UnityEngine.Random;
 
 public class CharacterController : MonoBehaviour
 {
     public Character myCharacter;
     public GameObject currentPosition;
+    public GameObject myPortrait;
+    public NavMeshAgent thisAgent;
 
     public int myInit;
 
@@ -23,9 +26,27 @@ public class CharacterController : MonoBehaviour
 
     public void Start()
     {
-
+        thisAgent = GetComponent<NavMeshAgent>();
+        thisAgent.updateRotation = false;
     }
 
+    public void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            RaycastHit hit;
+
+            if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, 100))
+            {
+                thisAgent.destination = hit.point;
+                GameObject.FindGameObjectWithTag("MainCamera").GetComponentInParent<NavMeshAgent>().SetDestination(hit.point);
+            }
+        }
+    }
+
+    
+
+    #region Not Sure if keep Code
     public void OnMouseDown()
     {
         Debug.Log("Pressed Character");
@@ -35,7 +56,7 @@ public class CharacterController : MonoBehaviour
         Manager.instance.actionInterface.ActionBarState(true);
         Manager.instance.actionInterface.SetupActionBar();
     }
-
+    #endregion
 
     #region Determine Stat Value
     public int DetermineiInitiative()

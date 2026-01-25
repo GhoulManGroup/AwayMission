@@ -16,6 +16,7 @@ public class CharacterPortrait : MonoBehaviour
     {
         myPortrait.sprite = characterController.myCharacter.myIcon;
         myText.text = characterController.myCharacter.health.ToString();
+        characterController.myPortrait = this.gameObject;
     }
       
 }

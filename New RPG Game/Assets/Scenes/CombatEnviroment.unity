@@ -823,6 +823,7 @@ MonoBehaviour:
   actionInterface: {fileID: 0}
   actionManager: {fileID: 0}
   turnController: {fileID: 0}
+  turnOrderQueInterface: {fileID: 0}
 --- !u!114 &682354985
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1053,8 +1054,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myCharacter: {fileID: 11400000, guid: fead462a21c5fc6448ec02bc77c2f8e3, type: 2}
   currentPosition: {fileID: 0}
+  myPortrait: {fileID: 0}
   myInit: 0
   hasActed: 0
+  myOwner: 0
 --- !u!65 &909328345
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1635,8 +1638,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myCharacter: {fileID: 11400000, guid: 6974533d0bd561c42ad5355025e6763d, type: 2}
   currentPosition: {fileID: 0}
+  myPortrait: {fileID: 0}
   myInit: 0
   hasActed: 0
+  myOwner: 0
 --- !u!65 &1252650388
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2019,8 +2024,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myCharacter: {fileID: 11400000, guid: dc0aa47c316d5f243b6e4f4f42074b3a, type: 2}
   currentPosition: {fileID: 0}
+  myPortrait: {fileID: 0}
   myInit: 0
   hasActed: 0
+  myOwner: 0
 --- !u!65 &1849606834
 BoxCollider:
   m_ObjectHideFlags: 0
