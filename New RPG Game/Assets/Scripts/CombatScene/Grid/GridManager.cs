@@ -19,8 +19,10 @@ namespace Navigation
             {       
                 for (int j = 0; j < gridHeight; j++)
                 {
-                    GameObject gridSpace = Instantiate(gridPrefab, new Vector3(i, 0, j), Quaternion.identity);
+                    GameObject gridSpace = Instantiate(gridPrefab, new Vector3(j, 0, i), Quaternion.identity);
                     gridSpace.name = i.ToString() + "," + j.ToString();
+                    GameObject parent = GameObject.FindGameObjectWithTag("LevelGridContainer");
+                    gridSpace.gameObject.transform.SetParent(parent.transform);
                 }
             }
         }

@@ -11,4 +11,30 @@ public class InteractiveObject : MonoBehaviour
     {
         Character, Item, Container, Door,
     }
+
+    public void OnMouseEnter()
+    {
+        //Display Informaiton Check
+        Debug.Log("On Hover Check");
+    }
+
+    public void OnMouseDown()
+    {
+        Debug.Log("On Click Check");
+
+        if (Input.GetMouseButton(0))
+        {
+            Debug.Log("On Click Left Check");
+        }
+
+        if (Input.GetMouseButtonDown(1))
+        {
+            Debug.Log("On Click Right Check");
+        }
+    }
+
+    public void OnMouseExit()
+    {
+        Debug.Log("On Hover Exit Check");
+    }
 }
