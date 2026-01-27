@@ -17,7 +17,7 @@ namespace Navigation
         public void GenerateGrid()
         {
             for (int i = 0; i < gridWidth; i++)
-            {       
+            {
                 for (int j = 0; j < gridHeight; j++)
                 {
                     GameObject gridSpace = Instantiate(gridPrefab, new Vector3(j, 0, i), Quaternion.identity);
@@ -33,5 +33,15 @@ namespace Navigation
             currentGrid.SetActive(on);
         }
 
+        public void Awake()
+        {
+            while (Manager.instance == null)
+            {
+                return;
+            }
+
+            Manager.instance.gridManager = this;
+
+        }
     }
 }

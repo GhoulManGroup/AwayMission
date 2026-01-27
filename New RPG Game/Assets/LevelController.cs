@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Navigation;
 
 public class LevelController : MonoBehaviour
 {
@@ -26,8 +27,7 @@ public class LevelController : MonoBehaviour
         {
             levelState = LevelState.combat;
 
-
-
+            Manager.instance.gridManager.GridState(true);
 
             Manager.instance.turnController.SetupTurnController();
         }

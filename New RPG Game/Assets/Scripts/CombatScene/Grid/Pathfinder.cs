@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace Navigation {
-    public class Pathfinder : MonoBehaviour
+    public class PathFinder : MonoBehaviour
     { // This class is our controller script for player related use of pathfinding in our project.
 
         CharacterController currentCharacter;

@@ -16,7 +16,7 @@ public class GridSpace : MonoBehaviour
 
     public List<GameObject> Neighbours = new List<GameObject>();
 
-    Pathfinder pathfinder;
+    PathFinder pathfinder;
 
     #endregion
 
