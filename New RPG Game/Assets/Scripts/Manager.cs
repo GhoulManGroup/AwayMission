@@ -6,6 +6,9 @@ public class Manager : MonoBehaviour
 {
     public static Manager instance { get; private set; }
 
+    [Header("LevelController")]
+    public LevelController levelController = null;
+
     [Header("ActionSystem")]
     public ActionInterface actionInterface = null;
     public ActionManager actionManager = null;

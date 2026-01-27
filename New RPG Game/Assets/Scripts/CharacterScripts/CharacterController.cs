@@ -48,7 +48,7 @@ public class CharacterController : MonoBehaviour
 
     #region Not Sure if keep Code
     public void OnMouseDown()
-    {
+    {// For combat the turn contorller should determine and set the active character but perhaps for non combat this should be detemined by on click if we decide to have a party its a unique niche for vtm since no game has a party system
         Debug.Log("Pressed Character");
         //Add Action List to This then we will, create a action Ui amanger script to insancate and manage the action Ui Buttons to declare actions 
         //This will lead to actually calling the movement code.

@@ -11,6 +11,7 @@ namespace Navigation
 
         public GameObject gridPrefab;
 
+        public GameObject currentGrid;
 
         [ContextMenu("Call This")]
         public void GenerateGrid()
@@ -25,6 +26,11 @@ namespace Navigation
                     gridSpace.gameObject.transform.SetParent(parent.transform);
                 }
             }
+        }
+
+        public void GridState(bool on)
+        {
+            currentGrid.SetActive(on);
         }
 
     }

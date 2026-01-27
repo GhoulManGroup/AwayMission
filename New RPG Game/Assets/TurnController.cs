@@ -31,7 +31,7 @@ public class TurnController : MonoBehaviour
     {
         Debug.Log("SetupTurnController");
         // grab the player party, then perform a check to see if anything around them is close enough to become an active entity
-        activeEntities.AddRange(this.GetComponentInChildren<Awayteam>().awayTeamMembers);
+        activeEntities.AddRange(this.GetComponentInChildren<PartyController>().currentPartyMembers);
 
         //Write Future code to grab all intial non awayteam entities nearby to add to active object list.
 

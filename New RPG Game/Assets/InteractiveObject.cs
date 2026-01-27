@@ -25,6 +25,11 @@ public class InteractiveObject : MonoBehaviour
         if (Input.GetMouseButton(0))
         {
             Debug.Log("On Click Left Check");
+            //Start Combat
+            //Stop any and all nav mesh movement
+            //Assign the player to a tile / the enemey charcter
+            //Start combat?
+            Manager.instance.levelController.BeginCombat();
         }
 
         if (Input.GetMouseButtonDown(1))
