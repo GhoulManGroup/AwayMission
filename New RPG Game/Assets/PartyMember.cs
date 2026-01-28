@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-namespace PartyManagement {
+namespace PartyManagement
+{
     public class PartyMember : MonoBehaviour
     {
 
@@ -29,3 +30,4 @@ namespace PartyManagement {
             }
         }
     }
+}

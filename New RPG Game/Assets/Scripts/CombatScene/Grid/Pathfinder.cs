@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using CombatSystem;
 
 namespace Navigation {
     public class PathFinder : MonoBehaviour
     { // This class is our controller script for player related use of pathfinding in our project.
 
-        CharacterController currentCharacter;
+        EntityController currentCharacter;
 
         [Header("Pathfinding Varibles Movement")]
         public GameObject startPosition;
@@ -35,7 +36,7 @@ namespace Navigation {
             WhichStepIsBroken = "Declare";
             //currentCharacter = creatureTokenPicked;
             possibleMoveDistance = 1; //creatureTokenPicked.GetComponent<CreatureToken>().currentMoveDistance;
-            startPosition = currentCharacter.GetComponent<CharacterController>().currentPosition;
+            startPosition = currentCharacter.GetComponent<EntityController>().currentPosition;
             tilesToCheck.Add(startPosition);
             //Old Crest Code
             //LCScript.participants[LCScript.currentTurnParticipant].GetComponent<Player>().moveCrestPoints / chosenPiece.GetComponent<CreatureToken>().moveCost;
@@ -119,11 +120,11 @@ namespace Navigation {
             //Move Towards It
             yield return StartCoroutine("WalkToTile");
 
-            if (currentCharacter.GetComponent<CharacterController>().currentPosition == desiredPosition)
+            if (currentCharacter.GetComponent<EntityController>().currentPosition == desiredPosition)
             {
                 //HasMoved();
             }
-            else if (currentCharacter.GetComponent<CharacterController>().currentPosition != desiredPosition)
+            else if (currentCharacter.GetComponent<EntityController>().currentPosition != desiredPosition)
             {
                 chosenPathTiles.Remove(chosenPathTiles[chosenPathTiles.Count - 1]);
                 StartCoroutine("MovePieceThroughPath");

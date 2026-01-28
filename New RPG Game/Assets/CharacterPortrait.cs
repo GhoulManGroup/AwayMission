@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using CombatSystem;
 
 public class CharacterPortrait : MonoBehaviour
 {
     //Use for both turn order and party UI portrait
-    public CharacterController characterController;
+    public EntityController characterController;
 
     public Image myPortrait;
 

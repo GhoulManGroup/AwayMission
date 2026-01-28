@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using PartyManagement;
 using static UnityEditor.Progress;
+using CombatSystem;
 
 public class TurnController : MonoBehaviour
 {
@@ -52,7 +54,7 @@ public class TurnController : MonoBehaviour
     {
         for (int i = 0; i < activeEntities.Count; i++)
         {
-            int priorityNumber = activeEntities[i].GetComponent<CharacterController>().DetermineiInitiative();
+            int priorityNumber = activeEntities[i].GetComponent<EntityController>().DetermineiInitiative();
 
             //Duplicate Protection
             if (!priority.Contains(priorityNumber))
@@ -122,7 +124,7 @@ public class TurnController : MonoBehaviour
 
         //Determine whose turn to act
 
-        Manager.instance.actionInterface.currentCharacter = activeEntities[0].gameObject.GetComponent<CharacterController>().myCharacter;
+        Manager.instance.actionInterface.currentCharacter = activeEntities[0].gameObject.GetComponent<EntityController>().myCharacter;
 
     }
 

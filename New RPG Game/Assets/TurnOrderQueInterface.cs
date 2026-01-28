@@ -1,3 +1,4 @@
+using CombatSystem;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -53,7 +54,7 @@ public class TurnOrderQueInterface : MonoBehaviour
         {
             GameObject newIcon = Instantiate(iconObject, iconBar.transform);
             myIcons.Add(newIcon);
-            myIcons[i].GetComponent<CharacterPortrait>().characterController = Manager.instance.turnController.activeEntities[i].GetComponent<CharacterController>();
+            myIcons[i].GetComponent<CharacterPortrait>().characterController = Manager.instance.turnController.activeEntities[i].GetComponent<EntityController>();
             myIcons[i].GetComponent<CharacterPortrait>().SetupPortrait();
         }
     }
