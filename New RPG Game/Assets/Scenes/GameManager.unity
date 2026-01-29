@@ -215,11 +215,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2607b163ee16310458f8109e2a89f652, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  partyController: {fileID: 0}
   levelController: {fileID: 0}
   actionInterface: {fileID: 0}
   actionManager: {fileID: 0}
   turnController: {fileID: 0}
   turnOrderQueInterface: {fileID: 0}
+  pathFinder: {fileID: 0}
+  gridManager: {fileID: 0}
 --- !u!1 &1072929228
 GameObject:
   m_ObjectHideFlags: 0
