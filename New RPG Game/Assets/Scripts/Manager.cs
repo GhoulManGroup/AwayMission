@@ -30,6 +30,9 @@ public class Manager : MonoBehaviour
     public PathFinder pathFinder = null;
     public GridManager gridManager = null;
 
+    [Header ("Reference System")]
+    public ReferenceManager referenceManager = null;
+
     public void Awake()
     {
         if (instance == null)

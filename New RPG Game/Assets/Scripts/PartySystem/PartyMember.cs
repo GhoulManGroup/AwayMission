@@ -10,24 +10,18 @@ namespace PartyManagement
 
         public NavMeshAgent thisAgent;
 
-        public void Start()
+        public IEnumerator Start()
         {
             thisAgent = GetComponent<NavMeshAgent>();
+
             thisAgent.updateRotation = false;
-        }
 
-        public void Update()
-        {
-            if (Input.GetMouseButtonDown(0))
+            while (Manager.instance.partyController== null)
             {
-                RaycastHit hit;
-
-                if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, 100))
-                {
-                    thisAgent.destination = hit.point;
-                    GameObject.FindGameObjectWithTag("MainCamera").GetComponentInParent<NavMeshAgent>().SetDestination(hit.point);
-                }
+                yield return null;
             }
+
+            Manager.instance.partyController.currentPartyMembers.Add(this.gameObject);
         }
     }
 }

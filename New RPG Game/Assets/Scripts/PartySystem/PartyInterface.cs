@@ -29,6 +29,11 @@ namespace PartyManagement
 
         }
 
+        public void SwapFormation()
+        {
+
+        }
+
 
     }
 }

@@ -4,19 +4,22 @@ using UnityEngine;
 using UnityEngine.AI;
 
 namespace PartyManagement
-{   /// <summary>
-    ///         //This class will manage and track the player character and their two maximum companion characters in the party.
-    /// </summary>
+{    
+     /// <summary>
+     /// This class will manage the games party system for controlling the primary player and their companions in the world when outside of combat
+     /// This will set and manage the active party determine if the active party moves individualy or togegther what formation ect
+     /// </summary>
     public class PartyController : MonoBehaviour
     {
-
-        public PartyInterface partyInterfaceUI = null;
+        #region Variables & declerations
         /// <summary>
-        /// This class will manage the games party system for controlling the primary player and their companions in the world when outside of combat
-        /// This will set and manage the active party determine if the active party moves individualy or togegther what formation ect
-        /// Will be called by partyMember class to check to see if they should be allowed to move on there own or as a unit
+        /// This is the UI that represented the current active party at all times tracking health, status ect, should display what character is active or party lead
         /// </summary>
-        /// 
+        public PartyInterface partyInterfaceUI = null;
+
+        /// <summary>
+        /// this list tracks what game objects are instanciated in the world as party members currently
+        /// </summary>
         public List<GameObject> currentPartyMembers = new List<GameObject>();
 
         /// <summary>
@@ -45,24 +48,52 @@ namespace PartyManagement
         /// /// </summary>
         public PartyMember chosenMember = null;
 
-        private void Awake()
+        /// <summary>
+        /// This object is the parent of the formation move cordiantes and will eventually manage what empty game objects each party member should be moving to
+        /// </summary>
+        public GameObject partyFormationController;
+
+        #endregion
+
+        private IEnumerator Start()
         {
             while (Manager.instance == null)
             {
-                return;
+                yield return null;
             }
-
             Manager.instance.partyController = this;
-
         }
 
+        #region Party Movement System
 
-
-        public void Start()
+        public void Update()
         {
-            //Grab player test characters untill we set up a more concreete system
-            currentPartyMembers.AddRange(GameObject.FindGameObjectsWithTag("Player"));
+            //Check if we are allowed to move this way > Controller
+            if (Manager.instance.levelController.levelState == LevelController.LevelState.explore)
+            {
+                if (Input.GetMouseButtonDown(0))
+                {
+                    RaycastHit hit;
+
+                    if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, 100))
+                    {
+                        if (freeMovement == true)
+                        {
+                            Debug.Log("FreeMove");
+                            chosenMember.GetComponent<NavMeshAgent>().SetDestination(hit.point);
+                        }
+                        else
+                        {
+                            Debug.Log("Non Free Move");
+                            partyFormationController.transform.position = hit.point;
+                            partyFormationController.GetComponent<PartyFormation>().MovePartyToFormation();
+                        }
+                    }
+                }
+            }
+    
         }
+        #endregion
     }
 
 }
