@@ -6,6 +6,8 @@ TagManager:
   tags:
   - ActionBar
   - Navigation
+  - LevelGridContainer
+  - Ground
   layers:
   - Default
   - TransparentFX

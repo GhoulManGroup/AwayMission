@@ -11,13 +11,16 @@ public class ReferenceManager : MonoBehaviour
     {
         while (Manager.instance == null)
         {
+            Debug.Log("Testing Log");
             yield return null;
         }
+
         Manager.instance.referenceManager = this;
     }
 
-    public IEnumerator Get(string name)
+    public bool checkReference(string name)
     {
-        yield return reference[name];
+        return reference.ContainsKey(name);
     }
+
 }

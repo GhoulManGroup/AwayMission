@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.EventSystems;
 
 namespace PartyManagement
 {    
@@ -71,20 +73,18 @@ namespace PartyManagement
             //Check if we are allowed to move this way > Controller
             if (Manager.instance.levelController.levelState == LevelController.LevelState.explore)
             {
-                if (Input.GetMouseButtonDown(0))
-                {
+                if (Input.GetMouseButtonDown(0) &&!EventSystem.current.IsPointerOverGameObject())
+                {   
                     RaycastHit hit;
 
                     if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, 100))
-                    {
+                    { 
                         if (freeMovement == true)
                         {
-                            Debug.Log("FreeMove");
                             chosenMember.GetComponent<NavMeshAgent>().SetDestination(hit.point);
                         }
                         else
                         {
-                            Debug.Log("Non Free Move");
                             partyFormationController.transform.position = hit.point;
                             partyFormationController.GetComponent<PartyFormation>().MovePartyToFormation();
                         }
@@ -93,6 +93,17 @@ namespace PartyManagement
             }
     
         }
+
+       /* public bool MouseOverUI()
+        {
+            var eventData = new PointerEventData(EventSystem.current);
+            eventData.position = Input.mousePosition;
+            var results = new List<RaycastResult>();
+            EventSystem.current.RaycastAll(eventData, results);
+
+            // Expose this as a variable in your script so other components can check for it.
+            return results.Count(x => x.gameObject.GetComponent<RectTransform>()) > 0;
+        }*/
         #endregion
     }
 

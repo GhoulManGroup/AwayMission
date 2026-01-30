@@ -18,6 +18,8 @@ namespace PartyManagement
             }
 
             Manager.instance.partyController.partyFormationController = this.gameObject;
+
+            //Manager.instance.referenceManager.Get("FormationBTN").
         }
         public void MovePartyToFormation()
         {

@@ -34,6 +34,11 @@ namespace PartyManagement
 
         }
 
+        public void ToggleFreeMove()
+        {
+            Manager.instance.partyController.freeMovement = !Manager.instance.partyController.freeMovement;
+        }
+
 
     }
 }
