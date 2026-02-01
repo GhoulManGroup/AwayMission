@@ -30,6 +30,7 @@ public class TurnController : MonoBehaviour
             Debug.Log("Waiting for turn order que interface to not be null");
             return;
         }
+
         Manager.instance.turnOrderQueInterface.PassActionButton.GetComponent<Button>().onClick.AddListener(PassInitiative);
     }
 

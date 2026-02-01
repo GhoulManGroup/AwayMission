@@ -22,7 +22,7 @@ public class InteractiveObject : MonoBehaviour
     {
         Debug.Log("On Click Check");
 
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0) && Manager.instance.levelController.levelState == LevelController.LevelState.explore)
         {
             Debug.Log("On Click Left Check");
             //Start Combat

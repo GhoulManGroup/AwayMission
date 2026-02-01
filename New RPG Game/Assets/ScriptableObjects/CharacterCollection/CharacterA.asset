@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f93d83e7f00c6240af7ab50f17f00aa, type: 3}
   m_Name: CharacterA
   m_EditorClassIdentifier: 
-  characterName: PersonC
-  myIcon: {fileID: 21300000, guid: 1387e6f89eb2e9d44993af3dfeaf9ef0, type: 3}
+  characterName: PersonA
+  myIcon: {fileID: 21300000, guid: 3bd7c79fc01bde04f9cd1bac75fefba1, type: 3}
   health: 100
   actionPoints: 5
   initiative: 5

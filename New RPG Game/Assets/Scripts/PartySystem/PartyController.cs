@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.EventSystems;
+using UnityEngine.UIElements;
 
 namespace PartyManagement
 {    
@@ -17,7 +18,7 @@ namespace PartyManagement
         /// <summary>
         /// This is the UI that represented the current active party at all times tracking health, status ect, should display what character is active or party lead
         /// </summary>
-        public PartyInterface partyInterfaceUI = null;
+        public PartyGUI partyGUI = null;
 
         /// <summary>
         /// this list tracks what game objects are instanciated in the world as party members currently
@@ -25,14 +26,15 @@ namespace PartyManagement
         public List<GameObject> currentPartyMembers = new List<GameObject>();
 
         /// <summary>
-        /// How many characters are currently in the party a base of one being the player character and up to two companions for simplicty sake might change later
+        /// how many active party members are in the party based on the ammount of objects in the party member list 
         /// </summary>
-        public PartySize partySize;
+        /// <returns></returns>
+        public int expectedPartySize = 0;
 
-        public enum PartySize
-        {
-            one, two, three,
-        }
+        /// <summary>
+        /// how many we can have in a party at this point in the game limit of 1 maximum of 3
+        /// </summary>
+        public int partyLimit = 3;
 
         /// <summary>
         /// This toggle is what determines if the player moves the current priority party member of the entire group when issuing a move action
@@ -63,39 +65,87 @@ namespace PartyManagement
             {
                 yield return null;
             }
+
             Manager.instance.partyController = this;
+
+            partyLead = GameObject.FindGameObjectWithTag("Player");
+
+            chosenMember = GameObject.FindGameObjectWithTag("Player").GetComponent<PartyMember>();
+
+
+            //Testing Only Code Remove later when other system to add and remove from party
+            expectedPartySize = 3;
+
+        }
+        /// <summary>
+        /// This method is to allow me to reorganize the order in which party members are organized within the formation though a little UI on the portraits. 
+        /// </summary>
+        /// <param name="space"></param> which formation postion to be assigned
+        /// <param name="movingMember"></param> which party member is requesting the swap
+        public void SwapListPosition(int space, GameObject movingMember)
+        {
+            int oldSpace = currentPartyMembers.IndexOf(movingMember);
+
+            GameObject toBeMoved = currentPartyMembers[space];
+
+            currentPartyMembers[space] = movingMember;
+
+            currentPartyMembers[oldSpace] = toBeMoved;
+
+            partyGUI.UpdateUI();
+
+            partyFormationController.GetComponent<PartyFormation>().MovePartyToFormation();
+
+
+
         }
 
         #region Party Movement System
 
         public void Update()
         {
+            CheckShouldMove();
+        }
+
+        public void CheckShouldMove()
+        {
             //Check if we are allowed to move this way > Controller
             if (Manager.instance.levelController.levelState == LevelController.LevelState.explore)
             {
-                if (Input.GetMouseButtonDown(0) &&!EventSystem.current.IsPointerOverGameObject())
-                {   
+                if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
+                {
                     RaycastHit hit;
 
                     if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, 100))
-                    { 
-                        if (freeMovement == true)
+                    {
+                        if (hit.collider.gameObject.layer == 8)
                         {
-                            chosenMember.GetComponent<NavMeshAgent>().SetDestination(hit.point);
-                        }
-                        else
-                        {
-                            partyFormationController.transform.position = hit.point;
-                            partyFormationController.GetComponent<PartyFormation>().MovePartyToFormation();
+                            if (freeMovement == true)
+                            {
+                                chosenMember.GetComponent<NavMeshAgent>().SetDestination(hit.point);
+                            }
+                            else
+                            {
+                                partyFormationController.transform.position = hit.point;
+                                partyFormationController.GetComponent<PartyFormation>().MovePartyToFormation();
+                            }
                         }
                     }
                 }
             }
-    
         }
 
-       /* public bool MouseOverUI()
+        public void StopMovement()
         {
+            for (int i = 0; i < currentPartyMembers.Count; i++)
+            {
+                currentPartyMembers[i].GetComponent<NavMeshAgent>().SetDestination(currentPartyMembers[i].transform.position);
+            }
+        }
+
+
+       /* public bool MouseOverUI()
+        { Use inplace of ispointerovergameobject() if that contiunes to error
             var eventData = new PointerEventData(EventSystem.current);
             eventData.position = Input.mousePosition;
             var results = new List<RaycastResult>();
