@@ -9,7 +9,8 @@ using CombatSystem;
 
 public class TurnController : MonoBehaviour
 {
-    public List<GameObject> activeEntities = new List<GameObject>();
+    
+    public List<GameObject> activeEntitiesInCombat = new List<GameObject>();
 
     Dictionary<int, GameObject> whatIntToEachEntity = new Dictionary<int, GameObject>();
 
@@ -39,7 +40,7 @@ public class TurnController : MonoBehaviour
     {
         Debug.Log("SetupTurnController");
         // grab the player party, then perform a check to see if anything around them is close enough to become an active entity
-        activeEntities.AddRange(this.GetComponentInChildren<PartyController>().currentPartyMembers);
+        activeEntitiesInCombat.AddRange(Manager.instance.partyController.currentPartyMembers);
 
         //Write Future code to grab all intial non awayteam entities nearby to add to active object list.
 
@@ -53,9 +54,9 @@ public class TurnController : MonoBehaviour
 
     public IEnumerator DetermineTurnOrder()
     {
-        for (int i = 0; i < activeEntities.Count; i++)
+        for (int i = 0; i < activeEntitiesInCombat.Count; i++)
         {
-            int priorityNumber = activeEntities[i].GetComponent<EntityController>().DetermineiInitiative();
+            int priorityNumber = activeEntitiesInCombat[i].GetComponent<EntityController>().DetermineiInitiative();
 
             //Duplicate Protection
             if (!priority.Contains(priorityNumber))
@@ -95,16 +96,16 @@ public class TurnController : MonoBehaviour
 
         for (int i = 0; i < priority.Count; i++)
         {
-            whatIntToEachEntity.Add(priority[i], activeEntities[i]);
+            whatIntToEachEntity.Add(priority[i], activeEntitiesInCombat[i]);
         }
 
         priority.Sort();
 
-        activeEntities.Clear();
+        activeEntitiesInCombat.Clear();
 
         for (int i = priority.Count - 1; i > -1; i--)
         {
-            activeEntities.Add(whatIntToEachEntity[priority[i]]);
+            activeEntitiesInCombat.Add(whatIntToEachEntity[priority[i]]);
         }
 
         yield return null;
@@ -125,7 +126,7 @@ public class TurnController : MonoBehaviour
 
         //Determine whose turn to act
 
-        Manager.instance.actionInterface.currentCharacter = activeEntities[0].gameObject.GetComponent<EntityController>().myCharacter;
+        Manager.instance.actionInterface.currentCharacter = activeEntitiesInCombat[0].gameObject.GetComponent<EntityController>().myCharacter;
 
     }
 

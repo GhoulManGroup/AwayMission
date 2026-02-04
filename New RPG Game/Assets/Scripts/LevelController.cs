@@ -23,6 +23,7 @@ public class LevelController : MonoBehaviour
     public void BeginCombat()
     {
         Debug.Log("Swapping To Combat Test");
+
         if (levelState == LevelState.explore)
         {
             levelState = LevelState.combat;

@@ -94,7 +94,11 @@ namespace PartyManagement
 
             partyGUI.UpdateUI();
 
-            partyFormationController.GetComponent<PartyFormation>().MovePartyToFormation();
+
+            if (Manager.instance.levelController.levelState == LevelController.LevelState.explore)
+            {
+                partyFormationController.GetComponent<PartyFormation>().MovePartyToFormation();
+            }
 
 
 

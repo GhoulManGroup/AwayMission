@@ -33,6 +33,9 @@ public class Manager : MonoBehaviour
     [Header("Camera Systems")]
     public MainCameraController mainCameraController = null;
 
+    [Header("Object Tracking / StateManagement")]
+    public EntityTracker entityTracker = null;
+
 
     public void Awake()
     {

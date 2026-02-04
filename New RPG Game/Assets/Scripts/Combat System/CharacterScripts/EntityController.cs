@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using Random = UnityEngine.Random;
@@ -29,6 +30,15 @@ namespace CombatSystem
             player, friendly, hostile, neutral
         }
 
+        public IEnumerator Start()
+        {
+            while (Manager.instance == null && Manager.instance.entityTracker == null)
+            {
+                yield return null;
+            }
+
+            Manager.instance.entityTracker.AddEntity(this);
+        }
 
         #region Not Sure if keep Code
         public void OnMouseDown()
