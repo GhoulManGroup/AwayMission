@@ -14,21 +14,15 @@ namespace CombatSystem
         /// This script will manage the details / behaviour of characters in the combat portion of the game 
         /// </summary>
         public Character myCharacter;
+
         public GameObject currentPosition;
+
         public GameObject myPortrait;
 
 
         public int myInit;
 
         public bool hasActed = false;
-
-        public MyOwner myOwner;
-
-
-        public enum MyOwner
-        {
-            player, friendly, hostile, neutral
-        }
 
         public IEnumerator Start()
         {

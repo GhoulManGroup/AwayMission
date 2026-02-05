@@ -4,9 +4,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// This class is used to track and pass all non party member entities in the world
-/// This will be used to find all the enemeys in the current space we are in and add them to combat when combat begins. 
+/// This class is used to track every game object within the active scene when it is first entered
+/// We will currently be using this to track whom within the current enviroment needs to be included in combat when it starts
 /// </summary>
+
 public class EntityTracker : MonoBehaviour
 {
     [SerializeField]
@@ -34,5 +35,27 @@ public class EntityTracker : MonoBehaviour
         {
             entityControllers.Add(controller);
         }
+    }
+
+    public void RemoveEntity(EntityController controller)
+    {
+        {
+            if (entityControllers.Contains(controller))
+            {
+                entityControllers.Remove(controller);
+            }
+            else
+            {
+                //Do Nothing;
+            }
+        }
+    }
+
+    public void GetCombatParticipants()
+    {
+       // foreach (var item in entityControllers)
+       // {
+            //if (item.myCharacter.who)
+        //}
     }
 }
