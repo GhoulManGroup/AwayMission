@@ -94,14 +94,10 @@ namespace PartyManagement
 
             partyGUI.UpdateUI();
 
-
             if (Manager.instance.levelController.levelState == LevelController.LevelState.explore && Manager.instance.partyController.freeMovement == true)
             {
                 partyFormationController.GetComponent<PartyFormation>().MovePartyToFormation();
             }
-
-
-
         }
 
         #region Party Movement System

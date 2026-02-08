@@ -50,11 +50,11 @@ public class TurnOrderQueInterface : MonoBehaviour
             Debug.Log(item + "Destroyed");
         }
 
-        for (int i = 0; i < Manager.instance.turnController.activeEntitiesInCombat.Count; i++)
+        for (int i = 0; i < Manager.instance.entityTracker.activeEntitiesInCombat.Count; i++)
         {
             GameObject newIcon = Instantiate(iconObject, iconBar.transform);
             myIcons.Add(newIcon);
-            myIcons[i].GetComponent<CharacterPortrait>().characterController = Manager.instance.turnController.activeEntitiesInCombat[i].GetComponent<EntityController>();
+            myIcons[i].GetComponent<CharacterPortrait>().characterController = Manager.instance.entityTracker.activeEntitiesInCombat[i];
             myIcons[i].GetComponent<CharacterPortrait>().SetupPortrait();
         }
     }

@@ -10,10 +10,21 @@ using UnityEngine;
 
 public class EntityTracker : MonoBehaviour
 {
+    /// <summary>
+    /// All current entitycontrollers belonging to game objects that are present within the current scene / loaded enviroment added at start
+    /// </summary>
     [SerializeField]
     private List<EntityController> entityControllers = new List<EntityController>();
 
-    private List<EntityController> hostileEntitys = new List<EntityController>();
+    /// <summary>
+    /// What entities are currently involved in the combat occuring at this moement in time based on either being flagged and friendly player or hostile
+    /// </summary>
+    public List<EntityController> activeEntitiesInCombat = new List<EntityController>();
+
+    /// <summary>
+    /// the initative stat value of each entity involved in the combat to determine the order in which each entity acts.
+    /// </summary>
+    public Dictionary<int, EntityController> whatIntToEachEntity = new Dictionary<int, EntityController>();
 
     private IEnumerator Start()
     {
@@ -51,11 +62,25 @@ public class EntityTracker : MonoBehaviour
         }
     }
 
-    public void GetCombatParticipants()
+    public void GetNPCCombatParticipants()
     {
-       // foreach (var item in entityControllers)
-       // {
-            //if (item.myCharacter.who)
-        //}
+        foreach (var item in entityControllers)
+        {
+            if (item.myCharacter.whatAmI == Character.WhatAmI.NPCC)
+            {
+                if (item.myCharacter.amAlive() == true)
+                {
+                    if (item.myCharacter.amHostile == true)
+                    {
+                        activeEntitiesInCombat.Add(item);
+                    }
+                }
+            }
+
+            if (item.myCharacter.whatAmI == Character.WhatAmI.player || item.myCharacter.whatAmI == Character.WhatAmI.partyMember)
+            {
+                activeEntitiesInCombat.Add(item);
+            }
+        }
     }
 }

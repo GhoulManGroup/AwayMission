@@ -62,8 +62,10 @@ namespace PartyManagement
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            Debug.Log("The cursor entered the selectable UI element.");
-            expandedPortrait.SetActive(true);
+            if (Manager.instance.levelController.levelState == LevelController.LevelState.explore)
+            {
+                expandedPortrait.SetActive(true);
+            }
         }
 
         public void OnPointerClick(PointerEventData eventData)
@@ -81,8 +83,10 @@ namespace PartyManagement
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            Debug.Log("On Exit Click GUI for Portrait");
-            expandedPortrait.SetActive(false);
+            if (expandedPortrait.activeInHierarchy)
+            {
+                expandedPortrait.SetActive(false);
+            }
         }
         
         public void SetPositonOneBTN()

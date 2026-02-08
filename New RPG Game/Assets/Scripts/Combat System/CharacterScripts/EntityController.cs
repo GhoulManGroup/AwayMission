@@ -19,7 +19,6 @@ namespace CombatSystem
 
         public GameObject myPortrait;
 
-
         public int myInit;
 
         public bool hasActed = false;
@@ -34,21 +33,6 @@ namespace CombatSystem
             Manager.instance.entityTracker.AddEntity(this);
         }
 
-        #region Not Sure if keep Code
-        public void OnMouseDown()
-        {// For combat the turn contorller should determine and set the active character but perhaps for non combat this should be detemined by on click if we decide to have a party its a unique niche for vtm since no game has a party system
-            if (Manager.instance.levelController.levelState == LevelController.LevelState.combat)
-            {
-                Manager.instance.actionInterface.currentCharacter = myCharacter;
-                Manager.instance.actionInterface.ActionBarState(true);
-                Manager.instance.actionInterface.SetupActionBar();
-            }
-            //Add Action List to This then we will, create a action Ui amanger script to insancate and manage the action Ui Buttons to declare actions 
-            //This will lead to actually calling the movement code.
-
-        }
-        #endregion
-
         #region Determine Stat Value
         public int DetermineiInitiative()
         {
@@ -59,5 +43,30 @@ namespace CombatSystem
             return myCharacter.initiative + convertValue;
         }
         #endregion
-    }
+
+        #region Combat Control Code
+
+        public void OnMouseDown()
+        {
+            Debug.Log("On Click");
+            if (Manager.instance.levelController.levelState == LevelController.LevelState.combat)
+            {
+                Debug.Log("On Click2");
+                Manager.instance.entityTracker.activeEntitiesInCombat[0].DistanceCheck(this.gameObject);
+            }
+        }
+        public IEnumerator MoveAction()
+        {
+            yield return null;
+        }
+
+        public void DistanceCheck(GameObject target)
+        {
+            float betweenUs = Vector3.Distance(this.transform.position, target.transform.position);
+            print(betweenUs);
+        }
+
+
+    #endregion
+}
 }

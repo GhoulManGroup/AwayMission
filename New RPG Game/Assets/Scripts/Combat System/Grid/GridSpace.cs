@@ -5,7 +5,6 @@ using Navigation;
 
 public class GridSpace : MonoBehaviour
 {
-
     #region Declerations
     [Header("")]
 

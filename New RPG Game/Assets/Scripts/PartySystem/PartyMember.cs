@@ -23,6 +23,7 @@ namespace PartyManagement
             }
 
             Manager.instance.partyController.currentPartyMembers.Add(this.gameObject);
+
         }
 
         public void OnMouseDown()

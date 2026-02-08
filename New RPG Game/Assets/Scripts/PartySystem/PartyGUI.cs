@@ -88,6 +88,20 @@ namespace PartyManagement
             }
         }
 
+        public void ShowHideUI()
+        {
+            if (formationSwapBTN.gameObject.activeInHierarchy)
+            {
+                formationSwapBTN.gameObject.SetActive(false);
+                freeMoveToggleBTN.gameObject.SetActive(false);
+            }
+            else
+            {
+                formationSwapBTN.gameObject.SetActive(true);
+                freeMoveToggleBTN.gameObject.SetActive(true);
+            }
+        }
+
 
     }
 }

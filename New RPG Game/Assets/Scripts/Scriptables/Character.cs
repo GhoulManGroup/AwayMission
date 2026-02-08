@@ -22,11 +22,26 @@ public class Character : ScriptableObject
 
     [Header("Character Ownershio")]
 
-    public WhoControlsMe whoControlsMeIN;
+    public WhatAmI whatAmI;
 
-    public enum WhoControlsMe
+    public enum WhatAmI
     {
-        player, friendly, neutral, hostile
+        player, partyMember, NPCC
+    }
+
+    [Header("Character Flags and Checks")]
+    public bool amHostile;
+
+    public bool amAlive()
+    {
+        if (health > 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
 }

@@ -6,22 +6,22 @@ using UnityEngine.UI;
 using PartyManagement;
 using static UnityEditor.Progress;
 using CombatSystem;
+using UnityEngine.TextCore.Text;
 
 public class TurnController : MonoBehaviour
 {
-    
-    public List<GameObject> activeEntitiesInCombat = new List<GameObject>();
+    public EntityTracker combatEntitys;
 
-    Dictionary<int, GameObject> whatIntToEachEntity = new Dictionary<int, GameObject>();
-
+    /// <summary>
+    /// List of who gets to act first based on the int of each controller in the combat
+    /// </summary>
     public List<int> priority = new List<int>();
-
-
-    public void Awake()
+    
+    IEnumerator Start()
     {
         while (Manager.instance == null)
         {
-            return;
+           yield return null;
         }
 
         Manager.instance.turnController = this;
@@ -29,43 +29,56 @@ public class TurnController : MonoBehaviour
         while (Manager.instance.turnOrderQueInterface == null)
         {
             Debug.Log("Waiting for turn order que interface to not be null");
-            return;
+            yield return null;
         }
 
         Manager.instance.turnOrderQueInterface.PassActionButton.GetComponent<Button>().onClick.AddListener(PassInitiative);
+
+        while (Manager.instance.entityTracker == null)
+        {
+            Debug.Log("Waiting for entiy tracker que interface to not be null");
+            yield return null;
+        }
+
+        combatEntitys = Manager.instance.entityTracker;
     }
 
     #region Setup Turn System
     public void SetupTurnController()
     {
         Debug.Log("SetupTurnController");
-        // grab the player party, then perform a check to see if anything around them is close enough to become an active entity
-        activeEntitiesInCombat.AddRange(Manager.instance.partyController.currentPartyMembers);
 
-        //Write Future code to grab all intial non awayteam entities nearby to add to active object list.
-
-        //Do check to see if any nearby entities need to become active from idle
-
+        Manager.instance.entityTracker.GetNPCCombatParticipants();
+        //Add combat perticipant to grid
+        Manager.instance.partyController.partyGUI.ShowHideUI();
         Manager.instance.turnOrderQueInterface.TurnOrderQueInterfaceState(true);
 
         StartCoroutine(StartTurn());
 
     }
-
+    /// <summary>
+    /// This method gives each entity involved in combat a turn sequence assingment for this round of combat with duplicate protection that bumps values up and down untill
+    /// every entity has its own unique value bumping previous values up or down one to ensure that they should still be around what ever object had the same intiative value
+    /// </summary>
+    /// <returns></returns>
     public IEnumerator DetermineTurnOrder()
     {
-        for (int i = 0; i < activeEntitiesInCombat.Count; i++)
-        {
-            int priorityNumber = activeEntitiesInCombat[i].GetComponent<EntityController>().DetermineiInitiative();
 
-            //Duplicate Protection
+        if (combatEntitys == null)
+        {
+            Debug.Log("Is null Why");
+            combatEntitys = Manager.instance.entityTracker;
+        }
+        for (int i = 0; i < combatEntitys.activeEntitiesInCombat.Count; i++)
+        {
+            int priorityNumber = combatEntitys.activeEntitiesInCombat[i].DetermineiInitiative();
+
             if (!priority.Contains(priorityNumber))
             {
                 priority.Add(priorityNumber);
             }
             else
             {
-
                 int randomNumber = Random.Range(1, 2);
                 Debug.Log("Duplicate Found " + randomNumber);
 
@@ -96,16 +109,16 @@ public class TurnController : MonoBehaviour
 
         for (int i = 0; i < priority.Count; i++)
         {
-            whatIntToEachEntity.Add(priority[i], activeEntitiesInCombat[i]);
+            combatEntitys.whatIntToEachEntity.Add(priority[i], combatEntitys.activeEntitiesInCombat[i]);
         }
 
         priority.Sort();
 
-        activeEntitiesInCombat.Clear();
+        combatEntitys.activeEntitiesInCombat.Clear();
 
         for (int i = priority.Count - 1; i > -1; i--)
         {
-            activeEntitiesInCombat.Add(whatIntToEachEntity[priority[i]]);
+            combatEntitys.activeEntitiesInCombat.Add(combatEntitys.whatIntToEachEntity[priority[i]]);
         }
 
         yield return null;
@@ -126,9 +139,12 @@ public class TurnController : MonoBehaviour
 
         //Determine whose turn to act
 
-        Manager.instance.actionInterface.currentCharacter = activeEntitiesInCombat[0].gameObject.GetComponent<EntityController>().myCharacter;
-
+        Manager.instance.actionInterface.currentCharacter = combatEntitys.activeEntitiesInCombat[0].myCharacter;
+        Manager.instance.actionInterface.ActionBarState(true);
+        Manager.instance.actionInterface.SetupActionBar();
     }
+
+
 
     public void PassInitiative()
     {

@@ -230,7 +230,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25dbb695388c6c646bc9242e63c02db3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myCharacter: {fileID: 0}
+  myCharacter: {fileID: 11400000, guid: 6974533d0bd561c42ad5355025e6763d, type: 2}
   currentPosition: {fileID: 0}
   myPortrait: {fileID: 0}
   myInit: 0
@@ -536,7 +536,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25dbb695388c6c646bc9242e63c02db3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myCharacter: {fileID: 0}
+  myCharacter: {fileID: 11400000, guid: 2be385cb996560340ab8f93f08488237, type: 2}
   currentPosition: {fileID: 0}
   myPortrait: {fileID: 0}
   myInit: 0
@@ -684,7 +684,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25dbb695388c6c646bc9242e63c02db3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myCharacter: {fileID: 0}
+  myCharacter: {fileID: 11400000, guid: dc0aa47c316d5f243b6e4f4f42074b3a, type: 2}
   currentPosition: {fileID: 0}
   myPortrait: {fileID: 0}
   myInit: 0
@@ -1083,7 +1083,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25dbb695388c6c646bc9242e63c02db3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myCharacter: {fileID: 0}
+  myCharacter: {fileID: 11400000, guid: 2be385cb996560340ab8f93f08488237, type: 2}
   currentPosition: {fileID: 0}
   myPortrait: {fileID: 0}
   myInit: 0
@@ -1144,7 +1144,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25dbb695388c6c646bc9242e63c02db3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myCharacter: {fileID: 0}
+  myCharacter: {fileID: 11400000, guid: fead462a21c5fc6448ec02bc77c2f8e3, type: 2}
   currentPosition: {fileID: 0}
   myPortrait: {fileID: 0}
   myInit: 0
@@ -1276,7 +1276,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25dbb695388c6c646bc9242e63c02db3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myCharacter: {fileID: 0}
+  myCharacter: {fileID: 11400000, guid: 2be385cb996560340ab8f93f08488237, type: 2}
   currentPosition: {fileID: 0}
   myPortrait: {fileID: 0}
   myInit: 0
