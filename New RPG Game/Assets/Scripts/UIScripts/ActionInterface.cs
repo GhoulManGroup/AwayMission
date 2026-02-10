@@ -8,12 +8,14 @@ public class ActionInterface : MonoBehaviour
     public Character currentCharacter;
 
     public List<GameObject> actionButtons = new List<GameObject>();
+
     public List<GameObject> actionPoints = new List<GameObject>();
 
     public void Start()
     {
         Manager.instance.actionInterface = this;
     }
+
     public void SetupActionBar()
     {
        for(int i = 0; i < currentCharacter.myActions.Count; i++)
@@ -27,6 +29,11 @@ public class ActionInterface : MonoBehaviour
         {
             actionPoints[i].SetActive(true);
         }
+    }
+
+    public void UpdateActionBar()
+    {
+
     }
 
     public void ResetActionBar()

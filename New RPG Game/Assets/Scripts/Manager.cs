@@ -1,4 +1,3 @@
-using Navigation;
 using PartyManagement;
 using System.Collections;
 using System.Collections.Generic;
@@ -27,8 +26,7 @@ public class Manager : MonoBehaviour
     public TurnOrderQueInterface turnOrderQueInterface = null;
 
     [Header("Combat Navigation System")]
-    public PathFinder pathFinder = null;
-    public GridManager gridManager = null;
+    //public PathFinder pathFinder = null;
 
     [Header("Camera Systems")]
     public MainCameraController mainCameraController = null;

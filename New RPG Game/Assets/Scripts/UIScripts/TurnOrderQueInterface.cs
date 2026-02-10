@@ -14,7 +14,7 @@ public class TurnOrderQueInterface : MonoBehaviour
 
     [Header("Other UI Elements")]
     [Space(6)]
-    public Button PassActionButton;
+    public Button passActionButton;
 
 
     public void Awake()

@@ -12,11 +12,14 @@ public class CharacterPortrait : MonoBehaviour
     public Image myPortrait;
 
     public TMPro.TextMeshProUGUI myText;
+
+    public TMPro.TextMeshProUGUI myInitative;
     
     public void SetupPortrait()
     {
         myPortrait.sprite = characterController.myCharacter.myIcon;
         myText.text = characterController.myCharacter.health.ToString();
+        myInitative.text = characterController.myInit.ToString();
         characterController.myPortrait = this.gameObject;
     }
       
