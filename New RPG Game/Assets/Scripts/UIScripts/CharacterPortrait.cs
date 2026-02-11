@@ -10,6 +10,7 @@ public class CharacterPortrait : MonoBehaviour
     public EntityController characterController;
 
     public Image myPortrait;
+    public Image greyOutSprite;
 
     public TMPro.TextMeshProUGUI myText;
 
@@ -19,8 +20,19 @@ public class CharacterPortrait : MonoBehaviour
     {
         myPortrait.sprite = characterController.myCharacter.myIcon;
         myText.text = characterController.myCharacter.health.ToString();
-        myInitative.text = characterController.myInit.ToString();
+        myInitative.text = characterController.currentInitative.ToString();
         characterController.myPortrait = this.gameObject;
+    }
+
+    public void UpdatePortrait()
+    {
+        myPortrait.sprite = characterController.myCharacter.myIcon;
+        myText.text = characterController.myCharacter.health.ToString();
+        myInitative.text = characterController.currentInitative.ToString();
+        characterController.myPortrait = this.gameObject;
+
+        this.greyOutSprite.enabled = characterController.hasActed;
+
     }
       
 }

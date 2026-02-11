@@ -7,16 +7,15 @@ using PartyManagement;
 using static UnityEditor.Progress;
 using CombatSystem;
 using UnityEngine.TextCore.Text;
+using System.Linq;
+using Unity.IO.LowLevel.Unsafe;
 
 public class TurnController : MonoBehaviour
 {
     public EntityTracker combatEntitys;
 
-    /// <summary>
-    /// List of who gets to act first based on the int of each controller in the combat
-    /// </summary>
-    /// 
-    public List<int> priority = new List<int>();
+    public EntityController currentEntity;
+
     
     IEnumerator Start()
     {
@@ -44,33 +43,47 @@ public class TurnController : MonoBehaviour
         combatEntitys = Manager.instance.entityTracker;
     }
 
+
     #region Setup Turn System
     public void SetupTurnController()
     {
         Debug.Log("SetupTurnController");
 
+        //find who is in the current combat
         Manager.instance.entityTracker.GetNPCCombatParticipants();
-        //Add combat perticipant to grid
+
+        //Hide non required UI elements in the party UI
         Manager.instance.partyController.partyGUI.ShowHideUI();
 
+        //Turn on the interface for the combat turn system display
         Manager.instance.turnOrderQueInterface.TurnOrderQueInterfaceState(true);
 
+        //begin the combat system
         StartCoroutine(StartTurn());
 
     }
     /// <summary>
     /// This method gives each entity involved in combat a turn sequence assingment for this round of combat with duplicate protection that bumps values up and down untill
     /// every entity has its own unique value bumping previous values up or down one to ensure that they should still be around what ever object had the same intiative value
+    /// 
+    /// we declare a temp list called priority to store each entitys intiative value then populate that list with each object in combatEntitys initative values before using a
+    /// temp dictionary to store what intiative int value belongs to what game object so we can readd them to the list we got them from after sorting them in order who who goes first
     /// </summary>
     /// <returns></returns>
+    /// 
     public IEnumerator DetermineTurnOrder()
     {
+
+        List<int> priority = new List<int>();
+
+        Dictionary<int, EntityController> whatIntToEachEntity = new Dictionary<int, EntityController>();
 
         if (combatEntitys == null)
         {
             Debug.Log("Is null Why");
             combatEntitys = Manager.instance.entityTracker;
         }
+
         for (int i = 0; i < combatEntitys.activeEntitiesInCombat.Count; i++)
         {
             int priorityNumber = combatEntitys.activeEntitiesInCombat[i].DetermineiInitiative();
@@ -111,20 +124,20 @@ public class TurnController : MonoBehaviour
 
         for (int i = 0; i < priority.Count; i++)
         {
-            combatEntitys.whatIntToEachEntity.Add(priority[i], combatEntitys.activeEntitiesInCombat[i]);
+            whatIntToEachEntity.Add(priority[i], combatEntitys.activeEntitiesInCombat[i]);
         }
 
-        priority.Sort();
+        priority.Sort((higher, lower) => lower.CompareTo(higher));
 
         combatEntitys.activeEntitiesInCombat.Clear();
 
-        for (int i = priority.Count - 1; i > -1; i--)
+        foreach (var item in priority)
         {
-            combatEntitys.activeEntitiesInCombat.Add(combatEntitys.whatIntToEachEntity[priority[i]]);
+            combatEntitys.activeEntitiesInCombat.Add(whatIntToEachEntity[item]);
+            whatIntToEachEntity[item].GetComponent<EntityController>().currentInitative = item;
         }
 
         yield return null;
-
     }
 
     #endregion
@@ -137,9 +150,9 @@ public class TurnController : MonoBehaviour
         yield return DetermineTurnOrder();
 
         //then set up UI display for this turn
-        Manager.instance.turnOrderQueInterface.UpdateIcons();
+        Manager.instance.turnOrderQueInterface.GenerateIcons();
 
-        Manager.instance.actionInterface.currentCharacter = combatEntitys.activeEntitiesInCombat[0].myCharacter;
+        currentEntity = combatEntitys.activeEntitiesInCombat[0];
 
         //Manager.instance.actionInterface.ActionBarState(true);
 
@@ -150,9 +163,12 @@ public class TurnController : MonoBehaviour
     /// This method is to declare you wish to stop acting with this entity and allow the next entity in the que to act
     /// Will also need to check if there are other hostile entitys in the que.
     /// </summary>
+    /// 
     public void PassInitiative()
     {
-        if ()
+        currentEntity.hasActed = true;
+        Manager.instance.turnOrderQueInterface.UpdateIcons();
+
     }
 
     /// <summary>
@@ -171,14 +187,6 @@ public class TurnController : MonoBehaviour
         for (int i = 0; i < Manager.instance.entityTracker.activeEntitiesInCombat.Count; i++)
         {
             
-        }
-    }
-
-    public bool CombatIsOver()
-    {
-        foreach (var item in collection)
-        {
-
         }
     }
 

@@ -19,7 +19,13 @@ namespace CombatSystem
 
         public GameObject myPortrait;
 
-        public int myInit;
+        [Header("Entity Stats and Attirbutes")]
+
+        public int startingInitative;
+        public int currentInitative;
+
+        public int startingHealth;
+        public int currentHealth;
 
         public bool hasActed = false;
 
@@ -38,8 +44,11 @@ namespace CombatSystem
         {
             // Will add more code here in future when system fleshedout more to adjust the value based on modifiers.
             float testValue = Random.RandomRange(1f, 10f);
+
             int convertValue = (int)MathF.Round(testValue);
-            myInit = myCharacter.initiative + convertValue;
+
+            startingInitative = myCharacter.initiative + convertValue;
+
             return myCharacter.initiative + convertValue;
         }
         #endregion
@@ -48,10 +57,8 @@ namespace CombatSystem
 
         public void OnMouseDown()
         {
-            Debug.Log("On Click");
             if (Manager.instance.levelController.levelState == LevelController.LevelState.combat)
             {
-                Debug.Log("On Click2");
                 Manager.instance.entityTracker.activeEntitiesInCombat[0].DistanceCheck(this.gameObject);
             }
         }

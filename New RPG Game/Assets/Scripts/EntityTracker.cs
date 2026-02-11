@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// This class is used to track every game object within the active scene when it is first entered
+/// This class is used to track every character game object within the active scene when it is first entered
 /// We will currently be using this to track whom within the current enviroment needs to be included in combat when it starts
 /// </summary>
 
@@ -16,6 +16,7 @@ public class EntityTracker : MonoBehaviour
     [SerializeField]
     private List<EntityController> entityControllers = new List<EntityController>();
 
+    #region Combat System
     /// <summary>
     /// What entities are currently involved in the combat occuring at this moement in time based on either being flagged and friendly player or hostile
     /// </summary>
@@ -24,8 +25,12 @@ public class EntityTracker : MonoBehaviour
     /// <summary>
     /// the initative stat value of each entity involved in the combat to determine the order in which each entity acts.
     /// </summary>
-    public Dictionary<int, EntityController> whatIntToEachEntity = new Dictionary<int, EntityController>();
 
+    public List<EntityController> entityToAct = new List<EntityController>();
+
+    public List<EntityController> entityHasActed = new List<EntityController>();
+
+    #endregion
     private IEnumerator Start()
     {
         while (Manager.instance == null)
