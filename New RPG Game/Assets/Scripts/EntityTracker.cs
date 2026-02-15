@@ -22,13 +22,6 @@ public class EntityTracker : MonoBehaviour
     /// </summary>
     public List<EntityController> activeEntitiesInCombat = new List<EntityController>();
 
-    /// <summary>
-    /// the initative stat value of each entity involved in the combat to determine the order in which each entity acts.
-    /// </summary>
-
-    public List<EntityController> entityToAct = new List<EntityController>();
-
-    public List<EntityController> entityHasActed = new List<EntityController>();
 
     #endregion
     private IEnumerator Start()

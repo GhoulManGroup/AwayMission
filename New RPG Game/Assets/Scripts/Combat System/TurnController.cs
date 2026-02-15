@@ -16,6 +16,7 @@ public class TurnController : MonoBehaviour
 
     public EntityController currentEntity;
 
+    public int turnCounter;
     
     IEnumerator Start()
     {
@@ -43,7 +44,6 @@ public class TurnController : MonoBehaviour
         combatEntitys = Manager.instance.entityTracker;
     }
 
-
     #region Setup Turn System
     public void SetupTurnController()
     {
@@ -57,6 +57,8 @@ public class TurnController : MonoBehaviour
 
         //Turn on the interface for the combat turn system display
         Manager.instance.turnOrderQueInterface.TurnOrderQueInterfaceState(true);
+
+        turnCounter = 1;
 
         //begin the combat system
         StartCoroutine(StartTurn());
@@ -152,47 +154,92 @@ public class TurnController : MonoBehaviour
         //then set up UI display for this turn
         Manager.instance.turnOrderQueInterface.GenerateIcons();
 
-        currentEntity = combatEntitys.activeEntitiesInCombat[0];
-
-        //Manager.instance.actionInterface.ActionBarState(true);
-
-        //Manager.instance.actionInterface.SetupActionBar();
+        EntityAct();
     }
 
     /// <summary>
-    /// This method is to declare you wish to stop acting with this entity and allow the next entity in the que to act
-    /// Will also need to check if there are other hostile entitys in the que.
+    /// Check combat list then action based on if player or NPC needs to act 
+    /// </summary>
+    public void EntityAct()
+    {
+        currentEntity = combatEntitys.activeEntitiesInCombat[0];
+
+        if (currentEntity.myCharacter.whatAmI == Character.WhatAmI.player || currentEntity.myCharacter.whatAmI == Character.WhatAmI.partyMember)
+        {
+            //Manager.instance.actionInterface.ActionBarState(true);
+
+            //Manager.instance.actionInterface.SetupActionBar();
+        }
+
+        else if (currentEntity.myCharacter.whatAmI == Character.WhatAmI.NPCC)
+        {
+            Debug.Log("Passing Turn AM AI");
+
+            if (currentEntity.myCharacter.amHostile == true)
+            {
+                Debug.Log("Passing Turn AM AI");
+
+                PassInitiative();
+            }
+        }
+
+    }
+
+    /// <summary>
+    /// This will be called after every turn / every entity action has occured to see if the combat should contiune or if either side has been wiped out.
+    /// </summary>
+    public void CheckCombatShouldEnd()
+    {
+
+    }
+
+    /// <summary>
+    /// Pass Initative 
     /// </summary>
     /// 
     public void PassInitiative()
     {
+        Debug.Log("Passed Initiative" + currentEntity.name);
+
         currentEntity.hasActed = true;
+
+        combatEntitys.activeEntitiesInCombat.Remove(currentEntity);
+
+        combatEntitys.activeEntitiesInCombat.Add(currentEntity);
+
         Manager.instance.turnOrderQueInterface.UpdateIcons();
 
+        CheckTurnOver();
     }
+
+    /// <summary>
+    /// Check if all creatures in activeEntitesInCombat have acted and if so 
+    /// </summary>
+    public void CheckTurnOver()
+    {
+        for (int i = 0; i < combatEntitys.activeEntitiesInCombat.Count; i++)
+        {
+            if (combatEntitys.activeEntitiesInCombat[i].GetComponent<EntityController>().hasActed == false)
+            {
+                EntityAct();
+                break;
+            }
+            else
+            {
+                EndTurn();
+            }
+        } 
+    }
+
 
     /// <summary>
     /// The end turn occurs when every entity has acted in the que and would be where end of turn effects occur & the end combat check would happen
     /// </summary>
     public void EndTurn()
     {
-
-    }
-
-    /// <summary>
-    /// Check every entity has acted 
-    /// </summary>
-    public void CheckState()
-    {
-        for (int i = 0; i < Manager.instance.entityTracker.activeEntitiesInCombat.Count; i++)
-        {
-            
-        }
-    }
-
-    public void ResetTurnOrder()
-    {
-
+        Debug.Log("Turn Ending");
+        turnCounter++;
+        StartCoroutine(StartTurn());
     }
 
     #endregion

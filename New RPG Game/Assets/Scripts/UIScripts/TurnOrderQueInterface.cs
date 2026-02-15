@@ -15,7 +15,7 @@ public class TurnOrderQueInterface : MonoBehaviour
 
     public GameObject entityToActList;
 
-    public GameObject entityHasActedList;
+    public GameObject turnCounter;
 
     [Header("Other UI Elements")]
     [Space(6)]
@@ -61,30 +61,24 @@ public class TurnOrderQueInterface : MonoBehaviour
         {
             GameObject newIcon = Instantiate(iconObject, entityToActList.transform);
             myIcons.Add(newIcon);
-            myIcons[i].GetComponent<CharacterPortrait>().characterController = Manager.instance.entityTracker.activeEntitiesInCombat[i];
-            myIcons[i].GetComponent<CharacterPortrait>().SetupPortrait();
         }
+
+        turnCounter.transform.SetAsLastSibling();
+
+        UpdateIcons();
     }
-
-    public void MoveIcon()
-    {
-
-    }
-
 
     public void UpdateIcons()
     {
         for (int i = 0; i < Manager.instance.entityTracker.activeEntitiesInCombat.Count; i++)
         {
-            if (Manager.instance.entityTracker.activeEntitiesInCombat[i].hasActed == true)
-            {
-                myIcons[i].gameObject.transform.SetParent(entityHasActedList.transform);
-            }
-            else
-            {
-                //do nothing in correct list
-            }
+            myIcons[i].GetComponent<CharacterPortrait>().characterController = Manager.instance.entityTracker.activeEntitiesInCombat[i];
+            myIcons[i].GetComponent<CharacterPortrait>().SetupPortrait();
         }
     }
 
+    public void MoveIconLast()
+    {
+
+    }
 }
