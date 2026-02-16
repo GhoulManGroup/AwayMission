@@ -156,6 +156,14 @@ public class TurnController : MonoBehaviour
         yield return null;
     }
 
+    public void ReadyForCombatTurn()
+    {
+        foreach (var item in combatEntitys.activeEntitiesInCombat)
+        {
+            item.GetComponent<EntityController>().hasActed = false;
+        }
+    }
+
     #endregion
 
     #region ManageTurnSystem
@@ -166,6 +174,9 @@ public class TurnController : MonoBehaviour
         yield return DetermineTurnOrder();
 
         //then set up UI display for this turn
+
+        ReadyForCombatTurn();
+
         Manager.instance.turnOrderQueInterface.UpdateIcons();
 
         turnPhase = Turnphase.actPhase;
@@ -233,18 +244,30 @@ public class TurnController : MonoBehaviour
     /// </summary>
     public void CheckTurnOver()
     {
-        for (int i = 0; i < combatEntitys.activeEntitiesInCombat.Count; i++)
+        bool entityToAct = false;
+
+        foreach (var item in combatEntitys.activeEntitiesInCombat)
         {
-            if (combatEntitys.activeEntitiesInCombat[i].GetComponent<EntityController>().hasActed == false)
+            if (item.GetComponent<EntityController>().hasActed == false)
             {
-                EntityAct();
-                break;
+                entityToAct = true;
+            }
+            else
+            {
+
             }
         }
 
-        turnPhase = Turnphase.endPhase;
+        if (entityToAct == true)
+        {
+            EntityAct();
+        }
+        else
+        {
+            turnPhase = Turnphase.endPhase;
 
-        EndTurn();
+            EndTurn();
+        }
     }
 
 
@@ -256,6 +279,8 @@ public class TurnController : MonoBehaviour
         Debug.Log("Turn Ending");
 
         turnCounter++;
+
+        turnPhase = Turnphase.startPhase;
 
         StartCoroutine(StartTurn());
     }
