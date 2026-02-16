@@ -46,14 +46,12 @@ public class TurnOrderQueInterface : MonoBehaviour
         this.GetComponent<CanvasGroup>().interactable = onOrOff;
     }
 
-
     public void GenerateIcons()
     {
         //Empty any existing icons that could have persisted between combats
         foreach (var item in myIcons)
         {
-            Destroy(item);
-            Debug.Log(item + "Destroyed");
+            RemoveIcon(item);
         }
 
         //Spawn in the new icons for this combat
@@ -62,8 +60,6 @@ public class TurnOrderQueInterface : MonoBehaviour
             GameObject newIcon = Instantiate(iconObject, entityToActList.transform);
             myIcons.Add(newIcon);
         }
-
-        turnCounter.transform.SetAsLastSibling();
 
         UpdateIcons();
     }
@@ -75,10 +71,27 @@ public class TurnOrderQueInterface : MonoBehaviour
             myIcons[i].GetComponent<CharacterPortrait>().characterController = Manager.instance.entityTracker.activeEntitiesInCombat[i];
             myIcons[i].GetComponent<CharacterPortrait>().SetupPortrait();
         }
+
+        if (Manager.instance.turnController.turnPhase == TurnController.Turnphase.startPhase)
+        {
+            turnCounter.transform.SetAsLastSibling();
+        }
+
     }
 
-    public void MoveIconLast()
+    public void MoveIcon()
     {
+        GameObject iconToMove = myIcons[0];
+        myIcons.RemoveAt(0);
+        myIcons.Add(iconToMove);
+        iconToMove.transform.SetAsLastSibling();
 
+    }
+
+
+    public void RemoveIcon(GameObject purgeThis)
+    {
+        myIcons.Remove(purgeThis);
+        Object.Destroy(purgeThis);
     }
 }

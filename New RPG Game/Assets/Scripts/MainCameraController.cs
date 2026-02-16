@@ -26,4 +26,6 @@ public class MainCameraController : MonoBehaviour
         this.transform.parent = newTarget.transform;
         this.transform.position = newTarget.transform.position;
     }
+
+    //Add code to allow movement of camera within a certain bounds of the playable space when combat is happening so the user can view the battlefield before taking action
 }

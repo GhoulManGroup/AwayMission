@@ -8,7 +8,6 @@ using static UnityEditor.Progress;
 using CombatSystem;
 using UnityEngine.TextCore.Text;
 using System.Linq;
-using Unity.IO.LowLevel.Unsafe;
 
 public class TurnController : MonoBehaviour
 {
@@ -17,6 +16,16 @@ public class TurnController : MonoBehaviour
     public EntityController currentEntity;
 
     public int turnCounter;
+
+    public Turnphase turnPhase;
+
+    public enum Turnphase
+    {
+        startPhase,
+        actPhase,
+        endPhase,
+
+    }
     
     IEnumerator Start()
     {
@@ -47,10 +56,14 @@ public class TurnController : MonoBehaviour
     #region Setup Turn System
     public void SetupTurnController()
     {
+
         Debug.Log("SetupTurnController");
 
         //find who is in the current combat
         Manager.instance.entityTracker.GetNPCCombatParticipants();
+
+        //Create the UI display of those characters 
+        Manager.instance.turnOrderQueInterface.GenerateIcons();
 
         //Hide non required UI elements in the party UI
         Manager.instance.partyController.partyGUI.ShowHideUI();
@@ -60,6 +73,7 @@ public class TurnController : MonoBehaviour
 
         turnCounter = 1;
 
+        turnPhase = Turnphase.startPhase;
         //begin the combat system
         StartCoroutine(StartTurn());
 
@@ -152,7 +166,9 @@ public class TurnController : MonoBehaviour
         yield return DetermineTurnOrder();
 
         //then set up UI display for this turn
-        Manager.instance.turnOrderQueInterface.GenerateIcons();
+        Manager.instance.turnOrderQueInterface.UpdateIcons();
+
+        turnPhase = Turnphase.actPhase;
 
         EntityAct();
     }
@@ -164,6 +180,8 @@ public class TurnController : MonoBehaviour
     {
         currentEntity = combatEntitys.activeEntitiesInCombat[0];
 
+        Manager.instance.mainCameraController.SwapCameraParent(currentEntity.gameObject);
+
         if (currentEntity.myCharacter.whatAmI == Character.WhatAmI.player || currentEntity.myCharacter.whatAmI == Character.WhatAmI.partyMember)
         {
             //Manager.instance.actionInterface.ActionBarState(true);
@@ -173,11 +191,9 @@ public class TurnController : MonoBehaviour
 
         else if (currentEntity.myCharacter.whatAmI == Character.WhatAmI.NPCC)
         {
-            Debug.Log("Passing Turn AM AI");
 
             if (currentEntity.myCharacter.amHostile == true)
             {
-                Debug.Log("Passing Turn AM AI");
 
                 PassInitiative();
             }
@@ -207,7 +223,7 @@ public class TurnController : MonoBehaviour
 
         combatEntitys.activeEntitiesInCombat.Add(currentEntity);
 
-        Manager.instance.turnOrderQueInterface.UpdateIcons();
+        Manager.instance.turnOrderQueInterface.MoveIcon();
 
         CheckTurnOver();
     }
@@ -224,11 +240,11 @@ public class TurnController : MonoBehaviour
                 EntityAct();
                 break;
             }
-            else
-            {
-                EndTurn();
-            }
-        } 
+        }
+
+        turnPhase = Turnphase.endPhase;
+
+        EndTurn();
     }
 
 
@@ -238,7 +254,9 @@ public class TurnController : MonoBehaviour
     public void EndTurn()
     {
         Debug.Log("Turn Ending");
+
         turnCounter++;
+
         StartCoroutine(StartTurn());
     }
 
