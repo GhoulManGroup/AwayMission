@@ -166,6 +166,7 @@ public class TurnController : MonoBehaviour
 
     #endregion
 
+    // Start > Act > Check Contiune > Pass Priority > Check Turn End > End Turn > Repeat
     #region ManageTurnSystem
 
     public IEnumerator StartTurn()
@@ -217,7 +218,33 @@ public class TurnController : MonoBehaviour
     /// </summary>
     public void CheckCombatShouldEnd()
     {
+        int friendlyCount = 0;
+        int hostileCount = 0;
 
+        foreach (var item in combatEntitys.activeEntitiesInCombat)
+        {
+             if (currentEntity.myCharacter.whatAmI == Character.WhatAmI.player || currentEntity.myCharacter.whatAmI == Character.WhatAmI.partyMember)
+             {
+                friendlyCount += 1;
+             }
+            else if (currentEntity.myCharacter.whatAmI == Character.WhatAmI.NPCC)
+            {
+
+                if (currentEntity.myCharacter.amHostile == true)
+                {
+                    hostileCount += 1;
+                }
+            }
+        }
+
+        if (hostileCount > 0 || friendlyCount > 0)
+        {
+
+        }
+        else
+        {
+
+        }
     }
 
     /// <summary>
@@ -283,6 +310,13 @@ public class TurnController : MonoBehaviour
         turnPhase = Turnphase.startPhase;
 
         StartCoroutine(StartTurn());
+    }
+
+    public void EndCombat()
+    {
+        // Hide UI
+        //Revive all party members
+        //Kill downed hostiles
     }
 
     #endregion

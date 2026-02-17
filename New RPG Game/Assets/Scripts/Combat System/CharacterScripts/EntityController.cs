@@ -60,17 +60,22 @@ namespace CombatSystem
             if (Manager.instance.levelController.levelState == LevelController.LevelState.combat)
             {
                 Manager.instance.entityTracker.activeEntitiesInCombat[0].DistanceCheck(this.gameObject);
+                
             }
-        }
-        public IEnumerator MoveAction()
-        {
-            yield return null;
         }
 
         public void DistanceCheck(GameObject target)
         {
             float betweenUs = Vector3.Distance(this.transform.position, target.transform.position);
             print(betweenUs);
+        }
+
+        public void CheckCondition()
+        {
+            if (currentHealth <= 0)
+            {
+
+            }
         }
 
 

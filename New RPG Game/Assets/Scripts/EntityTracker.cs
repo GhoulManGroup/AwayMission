@@ -22,6 +22,11 @@ public class EntityTracker : MonoBehaviour
     /// </summary>
     public List<EntityController> activeEntitiesInCombat = new List<EntityController>();
 
+    /// <summary>
+    /// Used to store what entitys were in combat and might be so again based on a condition change like being revived mid combat.
+    /// </summary>
+    public List<EntityController> inActiveEntitiesInCombat = new List<EntityController>();
+
 
     #endregion
     private IEnumerator Start()
@@ -81,4 +86,5 @@ public class EntityTracker : MonoBehaviour
             }
         }
     }
+
 }
