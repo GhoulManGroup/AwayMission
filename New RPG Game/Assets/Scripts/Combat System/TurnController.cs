@@ -196,9 +196,9 @@ public class TurnController : MonoBehaviour
 
         if (currentEntity.myCharacter.whatAmI == Character.WhatAmI.player || currentEntity.myCharacter.whatAmI == Character.WhatAmI.partyMember)
         {
-            //Manager.instance.actionInterface.ActionBarState(true);
+            Manager.instance.actionInterface.ActionBarState(true);
 
-            //Manager.instance.actionInterface.SetupActionBar();
+            Manager.instance.actionInterface.SetupActionBar();
         }
 
         else if (currentEntity.myCharacter.whatAmI == Character.WhatAmI.NPCC)
@@ -239,11 +239,11 @@ public class TurnController : MonoBehaviour
 
         if (hostileCount > 0 || friendlyCount > 0)
         {
-
+            //combat continues
         }
         else
         {
-
+            EndCombat();
         }
     }
 
@@ -314,6 +314,11 @@ public class TurnController : MonoBehaviour
 
     public void EndCombat()
     {
+        Manager.instance.levelController.levelState = LevelController.LevelState.explore;
+        Manager.instance.partyController.partyGUI.ShowHideUI();
+        Manager.instance.turnOrderQueInterface.ClearIcons();
+        Manager.instance.turnOrderQueInterface.TurnOrderQueInterfaceState(false);
+        combatEntitys.activeEntitiesInCombat.Clear();
         // Hide UI
         //Revive all party members
         //Kill downed hostiles

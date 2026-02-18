@@ -14,7 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterName: PersonB
   myIcon: {fileID: 21300000, guid: b49aeefd26835b542a01f4ea29ca99ce, type: 3}
+  initiative: 5
   health: 100
   actionPoints: 5
-  initiative: 5
-  myActions: []
+  myActions:
+  - {fileID: 11400000, guid: fc2d943eb781b094080c19d1edc82031, type: 2}
+  - {fileID: 0}
+  whatAmI: 0
+  amHostile: 0

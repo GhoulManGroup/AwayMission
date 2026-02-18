@@ -94,4 +94,13 @@ public class TurnOrderQueInterface : MonoBehaviour
         myIcons.Remove(purgeThis);
         Object.Destroy(purgeThis);
     }
+
+    public void ClearIcons()
+    {
+        foreach (var item in myIcons)
+        {
+            item.GetComponent<CharacterPortrait>().RemovePortrait();
+        }
+        myIcons.Clear();
+    }
 }

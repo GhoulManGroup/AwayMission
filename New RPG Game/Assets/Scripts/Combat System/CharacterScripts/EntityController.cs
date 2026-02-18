@@ -27,6 +27,10 @@ namespace CombatSystem
         public int startingHealth;
         public int currentHealth;
 
+        public float currentMoveDistance;
+        public float startingMoveDistance;
+
+
         public bool hasActed = false;
 
         public IEnumerator Start()

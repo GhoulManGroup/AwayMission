@@ -32,7 +32,11 @@ public class CharacterPortrait : MonoBehaviour
         characterController.myPortrait = this.gameObject;
 
         this.greyOutSprite.enabled = characterController.hasActed;
+    }
 
+    public void RemovePortrait()
+    {
+        Destroy(this.gameObject);
     }
       
 }

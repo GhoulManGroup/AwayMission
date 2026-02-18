@@ -17,6 +17,8 @@ public class Character : ScriptableObject
 
     public int actionPoints = 5;
 
+    public float moveDistance = 8;
+
     [Header("Character Actions")]
     public List<Action> myActions = new List<Action>();
 
