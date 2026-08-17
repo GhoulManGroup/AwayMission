@@ -18,7 +18,9 @@ public class ActionInterface : MonoBehaviour
 
     public void SetupActionBar()
     {
-       for(int i = 0; i < currentCharacter.myActions.Count; i++)
+        currentCharacter = Manager.instance.turnController.currentEntity.myCharacter;
+
+       for(int i = 0; i < currentCharacter.myActions.Count -1; i++)
         {
             actionButtons[i].GetComponent<Button>().interactable = true;
             actionButtons[i].GetComponent<Image>().sprite = currentCharacter.myActions[i].actionIcon;
