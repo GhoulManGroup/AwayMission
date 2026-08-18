@@ -64,7 +64,6 @@ namespace CombatSystem
             if (Manager.instance.levelController.levelState == LevelController.LevelState.combat)
             {
                 Manager.instance.entityTracker.activeEntitiesInCombat[0].DistanceCheck(this.gameObject);
-                
             }
         }
 
@@ -84,5 +83,5 @@ namespace CombatSystem
 
 
     #endregion
-}
+    }
 }
