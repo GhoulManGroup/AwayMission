@@ -15,7 +15,7 @@ public class InteractiveObject : MonoBehaviour
     public void OnMouseEnter()
     {
     //Display Informaiton Check
-    https://www.youtube.com/watch?v=x7kDpKABj98
+    //https://www.youtube.com/watch?v=x7kDpKABj98
     }
 
     public void OnMouseDown()

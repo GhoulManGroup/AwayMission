@@ -74,17 +74,15 @@ namespace PartyManagement
 
         public void ToggleFreeMove()
         {
-            Manager.instance.partyController.freeMovement = !Manager.instance.partyController.freeMovement;
-
-            if (Manager.instance.partyController.freeMovement == false)
+            if (Manager.instance.partyController.partyMovement == PartyController.PartyMovementMode.freeMovement)
+            {
+                Manager.instance.partyController.StopMovement();
+            }
+            else if (Manager.instance.partyController.partyMovement == PartyController.PartyMovementMode.formationMovement)
             {
                 Manager.instance.mainCameraController.SwapCameraParent(GameObject.FindGameObjectWithTag("Player"));
                 Manager.instance.partyController.partyFormationController.gameObject.transform.position = GameObject.FindGameObjectWithTag("Player").gameObject.transform.position;
                 Manager.instance.partyController.partyFormationController.GetComponent<PartyFormation>().MovePartyToFormation();
-            }
-            else if (Manager.instance.partyController.freeMovement == true)
-            {
-                Manager.instance.partyController.StopMovement();
             }
         }
 

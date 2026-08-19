@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -7,7 +8,7 @@ using UnityEngine.AI;
 /// </summary>
 [RequireComponent(typeof(NavMeshAgent))]
 [RequireComponent(typeof(LineRenderer))]
-public class NavMeshPathVisualizer : MonoBehaviour
+public class PreviewPlayerPath : MonoBehaviour
 {
     private NavMeshAgent agent;
     private LineRenderer lineRenderer;
@@ -15,6 +16,8 @@ public class NavMeshPathVisualizer : MonoBehaviour
     [Header("Line Settings")]
     public Color lineColor = Color.green;
     public float lineWidth = 0.2f;
+
+    public bool moveOrderSent = false;
 
     void Awake()
     {
@@ -30,15 +33,10 @@ public class NavMeshPathVisualizer : MonoBehaviour
         lineRenderer.positionCount = 0;
     }
 
-    void Update()
-    {
-        DrawPath();
-    }
-
     /// <summary>
     /// Draws the NavMeshAgent's current path using the LineRenderer.
     /// </summary>
-    private void DrawPath()
+    public void DrawPath()
     {
         if (agent.path == null || agent.path.corners.Length == 0)
         {
@@ -52,5 +50,28 @@ public class NavMeshPathVisualizer : MonoBehaviour
         {
             lineRenderer.SetPosition(i, agent.path.corners[i]);
         }
+    }
+
+    public IEnumerator UpdatePath()
+    {
+        while(agent.remainingDistance != 0)
+        {
+            lineRenderer.positionCount = 0;
+            for (int i = 0; i < agent.path.corners.Length; i++)
+            {
+                lineRenderer.SetPosition(i, agent.path.corners[i]);
+            }
+            yield return null;
+        }
+        yield return ClearLine();
+    }
+
+    public IEnumerator ClearLine()
+    {
+        if (agent.pathStatus == NavMeshPathStatus.PathComplete)
+        {
+            lineRenderer.positionCount = 0;
+        }
+        yield return null;
     }
 }

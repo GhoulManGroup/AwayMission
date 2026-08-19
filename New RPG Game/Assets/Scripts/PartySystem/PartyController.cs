@@ -39,7 +39,15 @@ namespace PartyManagement
         /// <summary>
         /// This toggle is what determines if the player moves the current priority party member of the entire group when issuing a move action
         /// </summary>
-        public bool freeMovement;
+        public enum PartyMovementMode
+        {
+            noMovement,
+            formationMovement,
+            freeMovement,
+            combatMovement,
+        }
+
+        public PartyMovementMode partyMovement;
 
         /// <summary>
         /// This character is who is at the head of the party when moving as a group and the character that others will follow 
@@ -72,7 +80,7 @@ namespace PartyManagement
 
             chosenMember = GameObject.FindGameObjectWithTag("Player").GetComponent<PartyMember>();
 
-
+            partyMovement = PartyMovementMode.formationMovement;
             //Testing Only Code Remove later when other system to add and remove from party
             expectedPartySize = 3;
 
@@ -94,7 +102,7 @@ namespace PartyManagement
 
             partyGUI.UpdateUI();
 
-            if (Manager.instance.levelController.levelState == LevelController.LevelState.explore && Manager.instance.partyController.freeMovement == true)
+            if (Manager.instance.levelController.levelState == LevelController.LevelState.explore && partyMovement == PartyMovementMode.formationMovement)
             {
                 partyFormationController.GetComponent<PartyFormation>().MovePartyToFormation();
             }
@@ -120,14 +128,41 @@ namespace PartyManagement
                     {
                         if (hit.collider.gameObject.layer == 8)
                         {
-                            if (freeMovement == true)
+                            if (partyMovement == PartyMovementMode.freeMovement)
                             {
                                 chosenMember.GetComponent<NavMeshAgent>().SetDestination(hit.point);
                             }
-                            else
+                            else if (partyMovement == PartyMovementMode.formationMovement)
                             {
                                 partyFormationController.transform.position = hit.point;
                                 partyFormationController.GetComponent<PartyFormation>().MovePartyToFormation();
+                            }
+                        }
+                    }
+                }
+            }
+            else if (Manager.instance.levelController.levelState == LevelController.LevelState.combat)
+            {
+                if (partyMovement == PartyMovementMode.combatMovement)
+                {
+                    RaycastHit hit;
+
+                    if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, 100))
+                    {
+                        if (hit.collider.gameObject.layer == 8)
+                        {
+                            if (Manager.instance.turnController.currentEntity.GetComponent<PreviewPlayerPath>().moveOrderSent == false)
+                            {
+                                Manager.instance.turnController.currentEntity.GetComponent<NavMeshAgent>().SetDestination(hit.point);
+                                Manager.instance.turnController.currentEntity.GetComponent<NavMeshAgent>().isStopped = true;
+                                Manager.instance.turnController.currentEntity.GetComponent<PreviewPlayerPath>().DrawPath();
+                            }
+                            if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
+                            {
+                                Manager.instance.turnController.currentEntity.GetComponent<NavMeshAgent>().SetDestination(hit.point);
+                                Manager.instance.turnController.currentEntity.GetComponent<PreviewPlayerPath>().moveOrderSent = true;
+                                Manager.instance.turnController.currentEntity.GetComponent<NavMeshAgent>().isStopped = false;
+                                StartCoroutine(Manager.instance.turnController.currentEntity.GetComponent<PreviewPlayerPath>().UpdatePath());
                             }
                         }
                     }

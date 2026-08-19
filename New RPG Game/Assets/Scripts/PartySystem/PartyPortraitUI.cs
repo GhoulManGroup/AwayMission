@@ -70,7 +70,7 @@ namespace PartyManagement
 
         public void OnPointerClick(PointerEventData eventData)
         {
-            if (Manager.instance.levelController.levelState == LevelController.LevelState.explore && Manager.instance.partyController.freeMovement == true)
+            if (Manager.instance.levelController.levelState == LevelController.LevelState.explore && Manager.instance.partyController.partyMovement == PartyController.PartyMovementMode.freeMovement)
             {
                 if (eventData.button == PointerEventData.InputButton.Left)
                 {

@@ -24,7 +24,6 @@ public class TurnController : MonoBehaviour
         startPhase,
         actPhase,
         endPhase,
-
     }
     
     IEnumerator Start()
@@ -196,6 +195,8 @@ public class TurnController : MonoBehaviour
 
         if (currentEntity.myCharacter.whatAmI == Character.WhatAmI.player || currentEntity.myCharacter.whatAmI == Character.WhatAmI.partyMember)
         {
+            Manager.instance.partyController.partyMovement = PartyController.PartyMovementMode.combatMovement;
+
             Manager.instance.actionInterface.ActionBarState(true);
 
             Manager.instance.actionInterface.SetupActionBar();
@@ -263,6 +264,11 @@ public class TurnController : MonoBehaviour
 
         Manager.instance.turnOrderQueInterface.MoveIcon();
 
+        if (currentEntity.myCharacter.whatAmI == Character.WhatAmI.player || currentEntity.myCharacter.whatAmI == Character.WhatAmI.partyMember)
+        {
+            Manager.instance.partyController.partyMovement = PartyController.PartyMovementMode.noMovement;
+        }
+
         CheckTurnOver();
     }
 
@@ -319,11 +325,11 @@ public class TurnController : MonoBehaviour
         Manager.instance.turnOrderQueInterface.ClearIcons();
         Manager.instance.turnOrderQueInterface.TurnOrderQueInterfaceState(false);
         combatEntitys.activeEntitiesInCombat.Clear();
+        Manager.instance.partyController.partyMovement = PartyController.PartyMovementMode.formationMovement;
         // Hide UI
         //Revive all party members
         //Kill downed hostiles
     }
-
     #endregion
 }
 

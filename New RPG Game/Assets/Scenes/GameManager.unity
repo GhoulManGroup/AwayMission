@@ -189,7 +189,7 @@ MonoBehaviour:
   currentPartyMembers: []
   expectedPartySize: 0
   partyLimit: 0
-  freeMovement: 0
+  partyMovement: 0
   partyLead: {fileID: 0}
   chosenMember: {fileID: 0}
   partyFormationController: {fileID: 0}
@@ -205,6 +205,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e1edaa56816d0647aa8268dab7c2e10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  entityControllers: []
+  activeEntitiesInCombat: []
+  inActiveEntitiesInCombat: []
 --- !u!1 &682354982
 GameObject:
   m_ObjectHideFlags: 0
@@ -255,9 +258,8 @@ MonoBehaviour:
   actionManager: {fileID: 0}
   turnController: {fileID: 0}
   turnOrderQueInterface: {fileID: 0}
-  pathFinder: {fileID: 0}
-  gridManager: {fileID: 0}
   mainCameraController: {fileID: 0}
+  entityTracker: {fileID: 0}
 --- !u!1 &1072929228
 GameObject:
   m_ObjectHideFlags: 0
@@ -449,5 +451,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2e455c01d03ef042929f5f24ded9588, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  activeEntitiesInCombat: []
-  priority: 
+  combatEntitys: {fileID: 0}
+  currentEntity: {fileID: 0}
+  turnCounter: 0
+  turnPhase: 0
