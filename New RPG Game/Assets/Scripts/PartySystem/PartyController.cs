@@ -151,11 +151,26 @@ namespace PartyManagement
                     {
                         if (hit.collider.gameObject.layer == 8)
                         {
+                            //Transform mousePosition = Camera.main.ScreenPointToRay(Input.mousePosition).trans;
+                            //float betweenUs = Vector3.Distance(this.transform.position, hit.midding);
+                            //print(betweenUs);
+
+                            //if (betweenUs <= Manager.instance.turnController.currentEntity.currentMoveDistance)
+                            //{
+                               // Manager.instance.turnController.currentEntity.GetComponent<PreviewPlayerPath>().canCoverDistance = true;
+                           // }
+                           // else
+                           // {
+                               // Manager.instance.turnController.currentEntity.GetComponent<PreviewPlayerPath>().canCoverDistance = false;
+                           // }
+
+                            //Check Distance as we draw
                             if (Manager.instance.turnController.currentEntity.GetComponent<PreviewPlayerPath>().moveOrderSent == false)
                             {
                                 Manager.instance.turnController.currentEntity.GetComponent<NavMeshAgent>().SetDestination(hit.point);
                                 Manager.instance.turnController.currentEntity.GetComponent<NavMeshAgent>().isStopped = true;
                                 Manager.instance.turnController.currentEntity.GetComponent<PreviewPlayerPath>().DrawPath();
+
                             }
                             if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
                             {

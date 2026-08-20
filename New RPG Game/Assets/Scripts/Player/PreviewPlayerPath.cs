@@ -14,10 +14,14 @@ public class PreviewPlayerPath : MonoBehaviour
     private LineRenderer lineRenderer;
 
     [Header("Line Settings")]
-    public Color lineColor = Color.green;
+    public Color previewBadMoveLineColor = Color.green;
+    public Color previewGoodMoveLineColor = Color.red;
+    public Color movementLineColor = Color.blue;
     public float lineWidth = 0.2f;
 
     public bool moveOrderSent = false;
+
+    public bool canCoverDistance = false;
 
     void Awake()
     {
@@ -26,11 +30,39 @@ public class PreviewPlayerPath : MonoBehaviour
 
         // Configure LineRenderer
         lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
-        lineRenderer.startColor = lineColor;
-        lineRenderer.endColor = lineColor;
+        lineRenderer.startColor = previewBadMoveLineColor;
+        lineRenderer.endColor = previewBadMoveLineColor;
         lineRenderer.startWidth = lineWidth;
         lineRenderer.endWidth = lineWidth;
         lineRenderer.positionCount = 0;
+    }
+
+    public void SetActiveColor()
+    {
+        Gradient tempGradient = new Gradient();
+        GradientColorKey[] tempColorKeys = new GradientColorKey[2];
+
+        tempColorKeys[0] = new GradientColorKey(movementLineColor, 0);
+
+        tempColorKeys[1] = new GradientColorKey(movementLineColor, 1);
+
+        tempGradient.colorKeys = tempColorKeys;
+
+        lineRenderer.colorGradient = tempGradient;
+
+        if (canCoverDistance == false)
+        {
+           // lineRenderer.startColor = previewBadMoveLineColor;
+        }
+        else if (canCoverDistance == true)
+        {
+            //lineRenderer.startColor = previewGoodMoveLineColor;
+        }
+        else if (canCoverDistance == true && moveOrderSent)
+        {
+
+
+        }
     }
 
     /// <summary>
@@ -38,6 +70,7 @@ public class PreviewPlayerPath : MonoBehaviour
     /// </summary>
     public void DrawPath()
     {
+        SetActiveColor();
         if (agent.path == null || agent.path.corners.Length == 0)
         {
             lineRenderer.positionCount = 0;
@@ -54,9 +87,10 @@ public class PreviewPlayerPath : MonoBehaviour
 
     public IEnumerator UpdatePath()
     {
+        SetActiveColor();
         while(agent.remainingDistance != 0)
         {
-            lineRenderer.positionCount = 0;
+            lineRenderer.positionCount = agent.path.corners.Length;
             for (int i = 0; i < agent.path.corners.Length; i++)
             {
                 lineRenderer.SetPosition(i, agent.path.corners[i]);
