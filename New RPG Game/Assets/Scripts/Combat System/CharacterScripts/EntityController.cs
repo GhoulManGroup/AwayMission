@@ -73,6 +73,17 @@ namespace CombatSystem
             print(betweenUs);
         }
 
+        public bool CheckCanMove()
+        {
+            if (currentMoveDistance > 0)
+            {
+                return true;
+            }else
+            {
+                return false;
+            }
+        }
+
         public void CheckCondition()
         {
             if (currentHealth <= 0)

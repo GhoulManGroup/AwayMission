@@ -14,9 +14,10 @@ public class PreviewPlayerPath : MonoBehaviour
     private LineRenderer lineRenderer;
 
     [Header("Line Settings")]
-    public Color previewBadMoveLineColor = Color.green;
-    public Color previewGoodMoveLineColor = Color.red;
-    public Color movementLineColor = Color.blue;
+    Color previewBadMoveLineColor = Color.red;
+    Color previewGoodMoveLineColor = Color.green;
+    Color movementLineColor = Color.blue;
+
     public float lineWidth = 0.2f;
 
     public bool moveOrderSent = false;
@@ -41,28 +42,27 @@ public class PreviewPlayerPath : MonoBehaviour
     {
         Gradient tempGradient = new Gradient();
         GradientColorKey[] tempColorKeys = new GradientColorKey[2];
-
-        tempColorKeys[0] = new GradientColorKey(movementLineColor, 0);
-
-        tempColorKeys[1] = new GradientColorKey(movementLineColor, 1);
+        Debug.LogError(canCoverDistance + " " + moveOrderSent);
+        if (canCoverDistance == false)
+        {
+            //Somthing to note encase we come back to it having the line gradiant show using the two colors the point where the player could reach along the current potential path.
+            tempColorKeys[0] = new GradientColorKey(previewBadMoveLineColor, 0);
+            tempColorKeys[1] = new GradientColorKey(previewBadMoveLineColor, 1);
+        }
+        else if (canCoverDistance == true && !moveOrderSent)
+        {
+            tempColorKeys[0] = new GradientColorKey(previewGoodMoveLineColor, 0);
+            tempColorKeys[1] = new GradientColorKey(previewGoodMoveLineColor, 1);
+        }
+        else if (canCoverDistance == true && moveOrderSent)
+        {
+            tempColorKeys[0] = new GradientColorKey(movementLineColor, 0);
+            tempColorKeys[1] = new GradientColorKey(movementLineColor, 1);
+        }
 
         tempGradient.colorKeys = tempColorKeys;
 
         lineRenderer.colorGradient = tempGradient;
-
-        if (canCoverDistance == false)
-        {
-           // lineRenderer.startColor = previewBadMoveLineColor;
-        }
-        else if (canCoverDistance == true)
-        {
-            //lineRenderer.startColor = previewGoodMoveLineColor;
-        }
-        else if (canCoverDistance == true && moveOrderSent)
-        {
-
-
-        }
     }
 
     /// <summary>
@@ -71,6 +71,7 @@ public class PreviewPlayerPath : MonoBehaviour
     public void DrawPath()
     {
         SetActiveColor();
+
         if (agent.path == null || agent.path.corners.Length == 0)
         {
             lineRenderer.positionCount = 0;

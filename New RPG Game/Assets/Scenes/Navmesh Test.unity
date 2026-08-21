@@ -156,7 +156,7 @@ Transform:
   - {fileID: 1915247089}
   - {fileID: 1103156605}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &172553965
 MonoBehaviour:
@@ -174,6 +174,37 @@ MonoBehaviour:
   - {fileID: 729530580}
   - {fileID: 1915247088}
   - {fileID: 1103156604}
+--- !u!1 &306453463
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 306453464}
+  m_Layer: 0
+  m_Name: NavMeshDummyPositionObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &306453464
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 306453463}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &327987125
 GameObject:
   m_ObjectHideFlags: 0
@@ -239,8 +270,8 @@ MonoBehaviour:
   currentInitative: 0
   startingHealth: 0
   currentHealth: 0
-  currentMoveDistance: 0
-  startingMoveDistance: 0
+  currentMoveDistance: 7
+  startingMoveDistance: 7
   hasActed: 0
 --- !u!114 &327987128
 MonoBehaviour:
@@ -333,7 +364,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &327987133
 MonoBehaviour:
@@ -347,9 +378,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 973b7e0ad3c0edc4393297489ef7bcfe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lineColor: {r: 0, g: 1, b: 0, a: 1}
+  previewBadMoveLineColor: {r: 0, g: 1, b: 0, a: 1}
+  previewGoodMoveLineColor: {r: 1, g: 0, b: 0, a: 1}
+  movementLineColor: {r: 0, g: 0, b: 1, a: 1}
   lineWidth: 0.2
   moveOrderSent: 0
+  canCoverDistance: 0
 --- !u!120 &327987134
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -619,7 +653,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &847402076
 GameObject:
@@ -662,8 +696,8 @@ MonoBehaviour:
   currentInitative: 0
   startingHealth: 0
   currentHealth: 0
-  currentMoveDistance: 0
-  startingMoveDistance: 0
+  currentMoveDistance: 7
+  startingMoveDistance: 7
   hasActed: 0
 --- !u!208 &847402078
 NavMeshObstacle:
@@ -817,8 +851,8 @@ MonoBehaviour:
   currentInitative: 0
   startingHealth: 0
   currentHealth: 0
-  currentMoveDistance: 0
-  startingMoveDistance: 0
+  currentMoveDistance: 7
+  startingMoveDistance: 7
   hasActed: 0
 --- !u!136 &927996724
 CapsuleCollider:
@@ -898,7 +932,7 @@ Transform:
   m_Children:
   - {fileID: 644758509}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!195 &927996728
 NavMeshAgent:
@@ -1045,9 +1079,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 973b7e0ad3c0edc4393297489ef7bcfe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lineColor: {r: 0, g: 1, b: 0, a: 1}
+  previewBadMoveLineColor: {r: 0, g: 1, b: 0, a: 1}
+  previewGoodMoveLineColor: {r: 1, g: 0, b: 0, a: 1}
+  movementLineColor: {r: 0, g: 0, b: 1, a: 1}
   lineWidth: 0.2
   moveOrderSent: 0
+  canCoverDistance: 0
 --- !u!1 &1040846683
 GameObject:
   m_ObjectHideFlags: 0
@@ -1282,7 +1319,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1129211871
 MonoBehaviour:
@@ -1401,8 +1438,8 @@ MonoBehaviour:
   currentInitative: 0
   startingHealth: 0
   currentHealth: 0
-  currentMoveDistance: 0
-  startingMoveDistance: 0
+  currentMoveDistance: 7
+  startingMoveDistance: 7
   hasActed: 0
 --- !u!114 &1171881448
 MonoBehaviour:
@@ -1495,7 +1532,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1171881453
 MonoBehaviour:
@@ -1509,9 +1546,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 973b7e0ad3c0edc4393297489ef7bcfe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lineColor: {r: 0, g: 1, b: 0, a: 1}
+  previewBadMoveLineColor: {r: 0, g: 1, b: 0, a: 1}
+  previewGoodMoveLineColor: {r: 1, g: 0, b: 0, a: 1}
+  movementLineColor: {r: 0, g: 0, b: 1, a: 1}
   lineWidth: 0.2
   moveOrderSent: 0
+  canCoverDistance: 0
 --- !u!120 &1171881454
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -1561,7 +1601,7 @@ LineRenderer:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0
+        time: 0.049633026
         value: 1
         inSlope: 0
         outSlope: 0
