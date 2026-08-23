@@ -65,6 +65,9 @@ namespace PartyManagement
         /// </summary>
         public GameObject partyFormationController;
 
+        public bool canCoverDistance = false;
+        public bool requestedMoveComplete;
+
         #endregion
 
         private IEnumerator Start()
@@ -146,46 +149,48 @@ namespace PartyManagement
             {
                 if (partyMovement == PartyMovementMode.combatMovement)
                 {
-                    if (Manager.instance.turnController.currentEntity.GetComponent<PreviewPlayerPath>().moveOrderSent == false)
+                    if (Manager.instance.turnController.currentEntity.GetComponent<PreviewPlayerPath>().moveOrderSent == false && Manager.instance.turnController.currentEntity.CheckMovementPointsRemaning())
                     { 
                         if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, 100))
                         {
-                            if (hit.collider.gameObject.layer == 8)
+                            if (hit.collider.gameObject.layer == 8 && !EventSystem.current.IsPointerOverGameObject())
                             {
-                                float betweenUs = Vector3.Distance(Manager.instance.turnController.currentEntity.transform.position, hit.point);
+                                float walkDistanceCheck = Vector3.Distance(Manager.instance.turnController.currentEntity.transform.position, hit.point);
+                                float distanceRounded = Mathf.RoundToInt(walkDistanceCheck);
 
-                                if (betweenUs <= Manager.instance.turnController.currentEntity.currentMoveDistance)
+                                if (distanceRounded <= Manager.instance.turnController.currentEntity.currentMoveDistance)
                                 {
-                                    Manager.instance.turnController.currentEntity.GetComponent<PreviewPlayerPath>().canCoverDistance = true;
+                                    canCoverDistance = true;
                                 }
                                 else
                                 {
-                                    Manager.instance.turnController.currentEntity.GetComponent<PreviewPlayerPath>().canCoverDistance = false;
+                                    canCoverDistance = false;
                                 }
 
                                 Manager.instance.turnController.currentEntity.GetComponent<NavMeshAgent>().SetDestination(hit.point);
                                 Manager.instance.turnController.currentEntity.GetComponent<NavMeshAgent>().isStopped = true;
                                 Manager.instance.turnController.currentEntity.GetComponent<PreviewPlayerPath>().DrawPath();
 
-                                if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
+                                if (Input.GetMouseButtonDown(0) && canCoverDistance == true)
                                 {
-                                    Manager.instance.turnController.currentEntity.GetComponent<NavMeshAgent>().SetDestination(hit.point);
                                     Manager.instance.turnController.currentEntity.GetComponent<PreviewPlayerPath>().moveOrderSent = true;
                                     Manager.instance.turnController.currentEntity.GetComponent<NavMeshAgent>().isStopped = false;
+                                    Manager.instance.turnController.currentEntity.currentMoveDistance -= distanceRounded;
+                                }
+                            }
+                            else
+                            {
+                                if (Manager.instance.turnController.currentEntity.GetComponent<LineRenderer>().positionCount != 0)
+                                {
+                                    Manager.instance.turnController.currentEntity.GetComponent<PreviewPlayerPath>().ClearLine();
                                 }
                             }
                         }
                     }
-                    else
+                    else if (Manager.instance.turnController.currentEntity.GetComponent<PreviewPlayerPath>().moveOrderSent == true)
                     {
                         StartCoroutine(Manager.instance.turnController.currentEntity.GetComponent<PreviewPlayerPath>().UpdatePath());
                     }
-
-
-
-
-
-
                 }
             }
         }

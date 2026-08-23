@@ -8,8 +8,10 @@ using Random = UnityEngine.Random;
 
 namespace CombatSystem
 {
+    [RequireComponent(typeof(NavMeshAgent))]
     public class EntityController : MonoBehaviour
     {
+
         /// <summary>
         /// This script will manage the details / behaviour of characters in the combat portion of the game 
         /// </summary>
@@ -20,15 +22,18 @@ namespace CombatSystem
         public GameObject myPortrait;
 
         [Header("Entity Stats and Attirbutes")]
+        //The stats this entity draws from theri character;
+        int startingInitative;
+        int startingHealth;
+        float startingMoveDistance;
+        int startingAP;
 
-        public int startingInitative;
+
         public int currentInitative;
-
-        public int startingHealth;
         public int currentHealth;
-
         public float currentMoveDistance;
-        public float startingMoveDistance;
+        public int currentAP;
+
 
 
         public bool hasActed = false;
@@ -39,6 +44,16 @@ namespace CombatSystem
             {
                 yield return null;
             }
+
+            startingInitative = myCharacter.initiative;
+            startingHealth = myCharacter.health;
+            startingMoveDistance = myCharacter.moveDistance;
+            startingAP = myCharacter.actionPoints;
+
+            currentInitative = startingInitative;
+            currentHealth = startingHealth;
+            currentMoveDistance = startingMoveDistance;
+            currentAP = startingAP;
 
             Manager.instance.entityTracker.AddEntity(this);
         }
@@ -73,7 +88,7 @@ namespace CombatSystem
             print(betweenUs);
         }
 
-        public bool CheckCanMove()
+        public bool CheckMovementPointsRemaning()
         {
             if (currentMoveDistance > 0)
             {
@@ -92,7 +107,13 @@ namespace CombatSystem
             }
         }
 
-
+        public void CombatRoundOver()
+        {
+            //reset action 
+            currentAP = startingAP;
+            currentMoveDistance = startingMoveDistance;
+            //Add code later to check for anything tht might subtract from this value like modifiers
+        }
     #endregion
     }
 }

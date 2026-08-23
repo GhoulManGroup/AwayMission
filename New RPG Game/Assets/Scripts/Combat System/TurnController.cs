@@ -285,10 +285,6 @@ public class TurnController : MonoBehaviour
             {
                 entityToAct = true;
             }
-            else
-            {
-
-            }
         }
 
         if (entityToAct == true)
@@ -313,7 +309,12 @@ public class TurnController : MonoBehaviour
 
         turnCounter++;
 
-        turnPhase = Turnphase.startPhase;
+        foreach (var item in combatEntitys.activeEntitiesInCombat)
+        {
+            item.GetComponent<EntityController>().CombatRoundOver();
+        }
+
+            turnPhase = Turnphase.startPhase;
 
         StartCoroutine(StartTurn());
     }
