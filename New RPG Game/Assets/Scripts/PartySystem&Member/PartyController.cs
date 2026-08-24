@@ -107,7 +107,12 @@ namespace PartyManagement
 
             if (Manager.instance.levelController.levelState == LevelController.LevelState.explore && partyMovement == PartyMovementMode.formationMovement)
             {
+                for (int i = 0; i < currentPartyMembers.Count; i++)
+                {
+                    currentPartyMembers[i].GetComponent<AgentController>().AgentIsActive();
+                }
                 partyFormationController.GetComponent<PartyFormation>().MovePartyToFormation();
+
             }
         }
 

@@ -13,7 +13,6 @@ public class PreviewPlayerPath : MonoBehaviour
 {
     private NavMeshAgent agent;
     private LineRenderer lineRenderer;
-    private PartyController controller;
 
     [Header("Line Settings")]
     Color previewBadMoveLineColor = Color.red;
@@ -42,7 +41,7 @@ public class PreviewPlayerPath : MonoBehaviour
     {
         Gradient tempGradient = new Gradient();
         GradientColorKey[] tempColorKeys = new GradientColorKey[2];
-        if ( Manager.instance.partyController.canCoverDistance == false)
+        if (Manager.instance.partyController.canCoverDistance == false)
         {
             //Somthing to note encase we come back to it having the line gradiant show using the two colors the point where the player could reach along the current potential path.
             tempColorKeys[0] = new GradientColorKey(previewBadMoveLineColor, 0);

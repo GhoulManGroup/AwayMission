@@ -27,6 +27,7 @@ public class LevelController : MonoBehaviour
         {
             levelState = LevelState.combat;
 
+            Manager.instance.partyController.StopMovement();
             Manager.instance.turnController.SetupTurnController();
         }
     }

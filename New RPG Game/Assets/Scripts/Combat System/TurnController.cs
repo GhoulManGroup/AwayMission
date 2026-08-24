@@ -155,13 +155,6 @@ public class TurnController : MonoBehaviour
         yield return null;
     }
 
-    public void ReadyForCombatTurn()
-    {
-        foreach (var item in combatEntitys.activeEntitiesInCombat)
-        {
-            item.GetComponent<EntityController>().hasActed = false;
-        }
-    }
 
     #endregion
 
@@ -190,6 +183,7 @@ public class TurnController : MonoBehaviour
     public void EntityAct()
     {
         currentEntity = combatEntitys.activeEntitiesInCombat[0];
+        currentEntity.GetComponent<AgentController>().AgentIsActive();
 
         Manager.instance.mainCameraController.SwapCameraParent(currentEntity.gameObject);
 
@@ -257,7 +251,7 @@ public class TurnController : MonoBehaviour
         Debug.Log("Passed Initiative" + currentEntity.name);
 
         currentEntity.hasActed = true;
-
+        currentEntity.GetComponent<AgentController>().AgentInactive();
         combatEntitys.activeEntitiesInCombat.Remove(currentEntity);
 
         combatEntitys.activeEntitiesInCombat.Add(currentEntity);
@@ -330,6 +324,17 @@ public class TurnController : MonoBehaviour
         // Hide UI
         //Revive all party members
         //Kill downed hostiles
+    }
+    #endregion
+
+    #region ManageCombatEntitys
+    public void ReadyForCombatTurn()
+    {
+        foreach (var item in combatEntitys.activeEntitiesInCombat)
+        {
+            item.GetComponent<EntityController>().hasActed = false;
+            item.GetComponent<AgentController>().AgentInactive();            
+        }
     }
     #endregion
 }

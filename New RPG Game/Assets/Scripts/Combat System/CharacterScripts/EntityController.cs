@@ -8,7 +8,7 @@ using Random = UnityEngine.Random;
 
 namespace CombatSystem
 {
-    [RequireComponent(typeof(NavMeshAgent))]
+    [RequireComponent(typeof(AgentController))]
     public class EntityController : MonoBehaviour
     {
 
