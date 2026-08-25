@@ -135,6 +135,7 @@ GameObject:
   - component: {fileID: 128474645}
   - component: {fileID: 128474647}
   - component: {fileID: 128474648}
+  - component: {fileID: 128474649}
   m_Layer: 0
   m_Name: '#LevelManager'
   m_TagString: Untagged
@@ -193,6 +194,8 @@ MonoBehaviour:
   partyLead: {fileID: 0}
   chosenMember: {fileID: 0}
   partyFormationController: {fileID: 0}
+  canCoverDistance: 0
+  requestedMoveComplete: 0
 --- !u!114 &128474648
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -208,6 +211,18 @@ MonoBehaviour:
   entityControllers: []
   activeEntitiesInCombat: []
   inActiveEntitiesInCombat: []
+--- !u!114 &128474649
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 128474644}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c538d45030e660b4eaa0692125da5961, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &682354982
 GameObject:
   m_ObjectHideFlags: 0

@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.AI;
 using UnityEngine.EventSystems;
 using UnityEngine.UIElements;
 
@@ -10,7 +9,7 @@ namespace PartyManagement
 {    
      /// <summary>
      /// This class will manage the games party system for controlling the primary player and their companions in the world when outside of combat
-     /// This will set and manage the active party determine if the active party moves individualy or togegther what formation ect
+     /// This will set and manage the active party determine if the active party moves individualy or togegther what formation ect 
      /// </summary>
     public class PartyController : MonoBehaviour
     {
@@ -19,6 +18,8 @@ namespace PartyManagement
         /// This is the UI that represented the current active party at all times tracking health, status ect, should display what character is active or party lead
         /// </summary>
         public PartyGUI partyGUI = null;
+
+        public PartyMovementController partyMovementController = null;
 
         /// <summary>
         /// this list tracks what game objects are instanciated in the world as party members currently
@@ -37,19 +38,6 @@ namespace PartyManagement
         public int partyLimit = 3;
 
         /// <summary>
-        /// This toggle is what determines if the player moves the current priority party member of the entire group when issuing a move action
-        /// </summary>
-        public enum PartyMovementMode
-        {
-            noMovement,
-            formationMovement,
-            freeMovement,
-            combatMovement,
-        }
-
-        public PartyMovementMode partyMovement;
-
-        /// <summary>
         /// This character is who is at the head of the party when moving as a group and the character that others will follow 
         /// </summary>
 
@@ -64,9 +52,6 @@ namespace PartyManagement
         /// This object is the parent of the formation move cordiantes and will eventually manage what empty game objects each party member should be moving to
         /// </summary>
         public GameObject partyFormationController;
-
-        public bool canCoverDistance = false;
-        public bool requestedMoveComplete;
 
         #endregion
 
@@ -83,7 +68,6 @@ namespace PartyManagement
 
             chosenMember = GameObject.FindGameObjectWithTag("Player").GetComponent<PartyMember>();
 
-            partyMovement = PartyMovementMode.formationMovement;
             //Testing Only Code Remove later when other system to add and remove from party
             expectedPartySize = 3;
 
@@ -116,110 +100,8 @@ namespace PartyManagement
             }
         }
 
-        #region Party Movement System
-
-        public void Update()
-        {
-            CheckShouldMove();
-        }
-
-        public void CheckShouldMove()
-        {
-            RaycastHit hit;
-
-            //Check if we are allowed to move this way > Controller
-            if (Manager.instance.levelController.levelState == LevelController.LevelState.explore)
-            {
-                if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
-                {
-                    if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, 100))
-                    {
-                        if (hit.collider.gameObject.layer == 8)
-                        {
-                            if (partyMovement == PartyMovementMode.freeMovement)
-                            {
-                                chosenMember.GetComponent<NavMeshAgent>().SetDestination(hit.point);
-                            }
-                            else if (partyMovement == PartyMovementMode.formationMovement)
-                            {
-                                partyFormationController.transform.position = hit.point;
-                                partyFormationController.GetComponent<PartyFormation>().MovePartyToFormation();
-                            }
-                        }
-                    }
-                }
-            }
-
-            else if (Manager.instance.levelController.levelState == LevelController.LevelState.combat)
-            {
-                if (partyMovement == PartyMovementMode.combatMovement)
-                {
-                    if (Manager.instance.turnController.currentEntity.GetComponent<PreviewPlayerPath>().moveOrderSent == false && Manager.instance.turnController.currentEntity.CheckMovementPointsRemaning())
-                    { 
-                        if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, 100))
-                        {
-                            if (hit.collider.gameObject.layer == 8 && !EventSystem.current.IsPointerOverGameObject())
-                            {
-                                float walkDistanceCheck = Vector3.Distance(Manager.instance.turnController.currentEntity.transform.position, hit.point);
-                                float distanceRounded = Mathf.RoundToInt(walkDistanceCheck);
-
-                                if (distanceRounded <= Manager.instance.turnController.currentEntity.currentMoveDistance)
-                                {
-                                    canCoverDistance = true;
-                                }
-                                else
-                                {
-                                    canCoverDistance = false;
-                                }
-
-                                Manager.instance.turnController.currentEntity.GetComponent<NavMeshAgent>().SetDestination(hit.point);
-                                Manager.instance.turnController.currentEntity.GetComponent<NavMeshAgent>().isStopped = true;
-                                Manager.instance.turnController.currentEntity.GetComponent<PreviewPlayerPath>().DrawPath();
-
-                                if (Input.GetMouseButtonDown(0) && canCoverDistance == true)
-                                {
-                                    Manager.instance.turnController.currentEntity.GetComponent<PreviewPlayerPath>().moveOrderSent = true;
-                                    Manager.instance.turnController.currentEntity.GetComponent<NavMeshAgent>().isStopped = false;
-                                    Manager.instance.turnController.currentEntity.currentMoveDistance -= distanceRounded;
-                                }
-                            }
-                            else
-                            {
-                                if (Manager.instance.turnController.currentEntity.GetComponent<LineRenderer>().positionCount != 0)
-                                {
-                                    Manager.instance.turnController.currentEntity.GetComponent<PreviewPlayerPath>().ClearLine();
-                                }
-                            }
-                        }
-                    }
-                    else if (Manager.instance.turnController.currentEntity.GetComponent<PreviewPlayerPath>().moveOrderSent == true)
-                    {
-                        StartCoroutine(Manager.instance.turnController.currentEntity.GetComponent<PreviewPlayerPath>().UpdatePath());
-                    }
-                }
-            }
-        }
-
-        public void StopMovement()
-        {
-            for (int i = 0; i < currentPartyMembers.Count; i++)
-            {
-                currentPartyMembers[i].GetComponent<NavMeshAgent>().SetDestination(currentPartyMembers[i].transform.position);
-            }
-        }
+        // Code to add and remove party members
 
 
-       /* public bool MouseOverUI()
-        { Use inplace of ispointerovergameobject() if that contiunes to error
-            var eventData = new PointerEventData(EventSystem.current);
-            eventData.position = Input.mousePosition;
-            var results = new List<RaycastResult>();
-            EventSystem.current.RaycastAll(eventData, results);
-
-            // Expose this as a variable in your script so other components can check for it.
-            return results.Count(x => x.gameObject.GetComponent<RectTransform>()) > 0;
-        }*/
-        #endregion
     }
-
 }
