@@ -8,8 +8,9 @@ using UnityEngine.UIElements;
 namespace PartyManagement
 {    
      /// <summary>
-     /// This class will manage the games party system for controlling the primary player and their companions in the world when outside of combat
+     /// This class will manage the games party system for controlling the primary player and their companion game objects in the game world,
      /// This will set and manage the active party determine if the active party moves individualy or togegther what formation ect 
+     /// It tracks what active characters are in the party at any one time and will interact with the party GUI, and party managemetn window UI when its made
      /// </summary>
     public class PartyController : MonoBehaviour
     {
@@ -64,6 +65,13 @@ namespace PartyManagement
 
             Manager.instance.partyController = this;
 
+            while (Manager.instance.partyMovementController == null)
+            {
+                yield return null;
+            }
+
+            partyMovementController = Manager.instance.partyMovementController;
+
             partyLead = GameObject.FindGameObjectWithTag("Player");
 
             chosenMember = GameObject.FindGameObjectWithTag("Player").GetComponent<PartyMember>();
@@ -89,19 +97,15 @@ namespace PartyManagement
 
             partyGUI.UpdateUI();
 
-            if (Manager.instance.levelController.levelState == LevelController.LevelState.explore && partyMovement == PartyMovementMode.formationMovement)
+            if (Manager.instance.levelController.levelState == LevelController.LevelState.explore && partyMovementController.partyMovement == PartyMovementController.PartyMovementMode.formationMovement)
             {
                 for (int i = 0; i < currentPartyMembers.Count; i++)
                 {
                     currentPartyMembers[i].GetComponent<AgentController>().AgentIsActive();
                 }
                 partyFormationController.GetComponent<PartyFormation>().MovePartyToFormation();
-
             }
         }
-
         // Code to add and remove party members
-
-
     }
 }

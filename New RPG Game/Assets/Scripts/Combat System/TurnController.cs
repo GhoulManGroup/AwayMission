@@ -11,9 +11,11 @@ using System.Linq;
 
 public class TurnController : MonoBehaviour
 {
-    public EntityTracker combatEntitys;
+    private EntityTracker combatEntitys;
 
     public EntityController currentEntity;
+
+    private PartyMovementController partyMoveController;
 
     public int turnCounter;
 
@@ -50,6 +52,13 @@ public class TurnController : MonoBehaviour
         }
 
         combatEntitys = Manager.instance.entityTracker;
+
+        while (Manager.instance.partyMovementController == null)
+        {
+            yield return null;
+        }
+
+        partyMoveController = Manager.instance.partyMovementController;
     }
 
     #region Setup Turn System
@@ -189,7 +198,7 @@ public class TurnController : MonoBehaviour
 
         if (currentEntity.myCharacter.whatAmI == Character.WhatAmI.player || currentEntity.myCharacter.whatAmI == Character.WhatAmI.partyMember)
         {
-            Manager.instance.partyController.partyMovement = PartyController.PartyMovementMode.combatMovement;
+            partyMoveController.partyMovement = PartyMovementController.PartyMovementMode.combatMovement;
 
             Manager.instance.actionInterface.ActionBarState(true);
 
@@ -201,7 +210,6 @@ public class TurnController : MonoBehaviour
 
             if (currentEntity.myCharacter.amHostile == true)
             {
-
                 PassInitiative();
             }
         }
@@ -260,7 +268,7 @@ public class TurnController : MonoBehaviour
 
         if (currentEntity.myCharacter.whatAmI == Character.WhatAmI.player || currentEntity.myCharacter.whatAmI == Character.WhatAmI.partyMember)
         {
-            Manager.instance.partyController.partyMovement = PartyController.PartyMovementMode.noMovement;
+            partyMoveController.partyMovement = PartyMovementController.PartyMovementMode.noMovement;
         }
 
         CheckTurnOver();
@@ -320,7 +328,7 @@ public class TurnController : MonoBehaviour
         Manager.instance.turnOrderQueInterface.ClearIcons();
         Manager.instance.turnOrderQueInterface.TurnOrderQueInterfaceState(false);
         combatEntitys.activeEntitiesInCombat.Clear();
-        Manager.instance.partyController.partyMovement = PartyController.PartyMovementMode.formationMovement;
+        partyMoveController.partyMovement = PartyMovementController.PartyMovementMode.formationMovement;
         // Hide UI
         //Revive all party members
         //Kill downed hostiles

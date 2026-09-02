@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.AI;
+using UnityEditor.Experimental.GraphView;
 
 namespace PartyManagement
 {
@@ -27,15 +28,41 @@ namespace PartyManagement
 
         public PartyMovementMode partyMovement;
 
-        public IEnumerator start()
+        public IEnumerator Start()
         {
             while (Manager.instance == null)
             {
                 yield return null;
             }
 
-            partyController = Manager.instance.partyController;
-            Manager.instance.partyController.partyMovementController = this;
+            Manager.instance.partyMovementController = this;
+
+
+
+            partyMovement = PartyMovementMode.formationMovement;
+
+            // Wait for entitys to assign themselves to the party controller 
+            while (Manager.instance.partyController == null)
+            {
+                yield return null;
+            }
+
+            while (Manager.instance.partyController.currentPartyMembers.Count < Manager.instance.partyController.expectedPartySize)
+            {
+                yield return null;
+            }
+
+             // then when all agents are setup and in their basic state update the entity gameobjects who are party members to have the proper navmeshagent/navmeshobstical state
+            foreach (var item in partyController.currentPartyMembers)
+            {
+                while (item.GetComponent<AgentController>().controllerSetup == false)
+                {
+                    Debug.Log("Waiting on agents to be ready");
+                    yield return null;
+                }
+            }
+
+            checkMovementState();
         }
         #region Party Movement System
 
@@ -121,7 +148,7 @@ namespace PartyManagement
             }
         }
 
-        public void StopMovement()
+        public void StopCurrentMovement()
         {
             for (int i = 0; i < partyController.currentPartyMembers.Count; i++)
             {
@@ -129,17 +156,48 @@ namespace PartyManagement
             }
         }
 
+        public void checkMovementState()
+        {
+            Debug.Log("Checking Movement State of Agents");
+            Debug.Log(partyController.currentPartyMembers.Count + " " + partyMovement);
+            foreach (var item in partyController.currentPartyMembers)
+            {
+                if (partyMovement == PartyMovementMode.noMovement)
+                {
+                    item.GetComponent<AgentController>().AgentInactive();
+                }
+                else if (partyMovement == PartyMovementMode.freeMovement)
+                {
+                    if (item == partyController.chosenMember)
+                    {
+                        item.GetComponent<AgentController>().AgentIsActive();
+                    }
+                    else
+                    {
+                        item.GetComponent<AgentController>().AgentInactive();
+                    }
+                }
+                else if (partyMovement == PartyMovementMode.formationMovement)
+                {
+                    item.GetComponent<AgentController>().AgentIsActive();
+                }
+                else if (partyMovement == PartyMovementMode.combatMovement)
+                {
+                    item.GetComponent<AgentController>().AgentInactive();
+                }
+            }
 
-        /* public bool MouseOverUI()
-         { Use inplace of ispointerovergameobject() if that contiunes to error
-             var eventData = new PointerEventData(EventSystem.current);
-             eventData.position = Input.mousePosition;
-             var results = new List<RaycastResult>();
-             EventSystem.current.RaycastAll(eventData, results);
+            /* public bool MouseOverUI()
+             { Use inplace of ispointerovergameobject() if that contiunes to error
+                 var eventData = new PointerEventData(EventSystem.current);
+                 eventData.position = Input.mousePosition;
+                 var results = new List<RaycastResult>();
+                 EventSystem.current.RaycastAll(eventData, results);
 
-             // Expose this as a variable in your script so other components can check for it.
-             return results.Count(x => x.gameObject.GetComponent<RectTransform>()) > 0;
-         }*/
-        #endregion
+                 // Expose this as a variable in your script so other components can check for it.
+                 return results.Count(x => x.gameObject.GetComponent<RectTransform>()) > 0;
+             }*/
+            #endregion
+        }
     }
 }

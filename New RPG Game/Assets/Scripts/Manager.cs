@@ -7,9 +7,11 @@ public class Manager : MonoBehaviour
 { 
     /// <summary>
     /// This class is a Core script that you use to access all the various key scripts in the project from one another more conveniently to reduce unecessary varibles / refrences 
-    /// The purpose of this class is not to access every script but to allow classes that need to contact other non related systems
+    /// The purpose of this class is not to access every script but to allow classes that need to contact other non related systems there should be just one instance of every class here
     /// </summary>
     public static Manager instance { get; private set; }
+
+    public bool managerSetup = false; // We will make sure that every expected class declared here isn't null before allowing the game to proceed to prevent null errors or things occuring before everything is setup to do.
 
     [Header("PartyManagement")]
     public PartyController partyController = null;
@@ -25,8 +27,8 @@ public class Manager : MonoBehaviour
     public TurnController turnController = null;
     public TurnOrderQueInterface turnOrderQueInterface = null;
 
-    [Header("Combat Navigation System")]
-    //public PathFinder pathFinder = null;
+    [Header("EntityMovementSystems")]
+    public PartyMovementController partyMovementController = null;
 
     [Header("Camera Systems")]
     public MainCameraController mainCameraController = null;

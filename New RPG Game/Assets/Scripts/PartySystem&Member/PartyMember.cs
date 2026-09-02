@@ -28,7 +28,7 @@ namespace PartyManagement
         public void OnMouseDown()
         {
             //Might have to add an on mouse down check here later for doing a friendly action outside of combat perhaps?
-            if (Manager.instance.levelController.levelState == LevelController.LevelState.explore && Manager.instance.partyController.partyMovement == PartyController.PartyMovementMode.freeMovement)
+            if (Manager.instance.levelController.levelState == LevelController.LevelState.explore && Manager.instance.partyController.partyMovementController.partyMovement == PartyMovementController.PartyMovementMode.freeMovement)
             {
                 Manager.instance.partyController.chosenMember = this;
                 Manager.instance.mainCameraController.SwapCameraParent(this.gameObject);

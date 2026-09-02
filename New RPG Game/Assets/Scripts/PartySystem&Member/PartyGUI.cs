@@ -12,6 +12,8 @@ namespace PartyManagement
     /// </summary>
     public class PartyGUI : MonoBehaviour
     {
+        private PartyMovementController playerMoveController;
+
         [SerializeField]
         Button formationSwapBTN;
 
@@ -34,6 +36,7 @@ namespace PartyManagement
             }
 
             Manager.instance.partyController.partyGUI = this;
+            playerMoveController = Manager.instance.partyController.partyMovementController;
 
             freeMoveToggleBTN.onClick.AddListener(ToggleFreeMove);
 
@@ -74,11 +77,11 @@ namespace PartyManagement
 
         public void ToggleFreeMove()
         {
-            if (Manager.instance.partyController.partyMovement == PartyController.PartyMovementMode.freeMovement)
+            if (playerMoveController.partyMovement == PartyMovementController.PartyMovementMode.freeMovement)
             {
-                Manager.instance.partyController.StopMovement();
+                playerMoveController.StopCurrentMovement();
             }
-            else if (Manager.instance.partyController.partyMovement == PartyController.PartyMovementMode.formationMovement)
+            else if (playerMoveController.partyMovement == PartyMovementController.PartyMovementMode.formationMovement)
             {
                 Manager.instance.mainCameraController.SwapCameraParent(GameObject.FindGameObjectWithTag("Player"));
                 Manager.instance.partyController.partyFormationController.gameObject.transform.position = GameObject.FindGameObjectWithTag("Player").gameObject.transform.position;

@@ -9,6 +9,7 @@ public class AgentController : MonoBehaviour
 {
     private NavMeshAgent agent;
     private NavMeshObstacle obstacle;
+    public bool controllerSetup = false;
 
     void Awake()
     {
@@ -22,6 +23,8 @@ public class AgentController : MonoBehaviour
         obstacle.enabled = true;
         obstacle.shape = NavMeshObstacleShape.Capsule;
         obstacle.carving = true;
+
+        controllerSetup = true;
     }
     
     //When combat starts only the active entity in the world will be set to active and allowed to move all other entitys must be statonary and have apropirate collison to avoid.

@@ -34,8 +34,6 @@ namespace CombatSystem
         public float currentMoveDistance;
         public int currentAP;
 
-
-
         public bool hasActed = false;
 
         public IEnumerator Start()
@@ -73,15 +71,6 @@ namespace CombatSystem
         #endregion
 
         #region Combat Control Code
-
-        public void OnMouseDown()
-        {
-            if (Manager.instance.levelController.levelState == LevelController.LevelState.combat)
-            {
-                Manager.instance.age
-            }
-        }
-
 
         public bool CheckMovementPointsRemaning()
         {
